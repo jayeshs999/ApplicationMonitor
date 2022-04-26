@@ -12,7 +12,7 @@
         </a>
       </div>
       <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-        <li nz-menu-item *ngFor="let link of links" [routerLink]="link.url">
+        <li nz-menu-item *ngFor="let link of links" [nzMatchRouter]="true" [routerLink]="link.url">
             <i nz-icon nzType="{{link.icon}}"></i>
             <span>{{link.name}}</span>
         </li>
