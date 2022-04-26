@@ -12,25 +12,9 @@
         </a>
       </div>
       <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-        <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
-          <ul>
-            <li nz-menu-item nzMatchRouter>
-              <a routerLink="/welcome">Welcome</a>
-            </li>
-            <li nz-menu-item nzMatchRouter>
-              <a>Monitor</a>
-            </li>
-            <li nz-menu-item nzMatchRouter>
-              <a>Workplace</a>
-            </li>
-          </ul>
-        </li>
-        <li nz-submenu nzOpen nzTitle="Form" nzIcon="form">
-          <ul>
-            <li nz-menu-item nzMatchRouter>
-              <a>Basic Form</a>
-            </li>
-          </ul>
+        <li nz-menu-item *ngFor="let link of links" [routerLink]="link.url">
+            <i nz-icon nzType="{{link.icon}}"></i>
+            <span>{{link.name}}</span>
         </li>
       </ul>
     </nz-sider>

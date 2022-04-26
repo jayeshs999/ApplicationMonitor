@@ -8,7 +8,28 @@ import { Component, OnInit } from '@angular/core';
 export class PagesComponent implements OnInit {
   title = 'ApplicationMonitor';
   isCollapsed = true;
-  
+  links = [
+    {
+      name : 'Dashboard',
+      url : '/pages/dashboard',
+      icon : 'dashboard'
+    },
+    {
+      name : 'Alerts',
+      url : '/pages/alerts',
+      icon : 'bell'
+    },
+    {
+      name : 'Settings',
+      url : '/pages/settings',
+      icon : 'setting'
+    },
+    {
+      name : 'Visualize',
+      url : '/pages/visualize',
+      icon : 'area-chart'
+    }
+  ]
   constructor() { }
 
   ngOnInit(): void {
