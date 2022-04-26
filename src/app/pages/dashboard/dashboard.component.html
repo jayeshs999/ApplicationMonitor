@@ -1,1 +1,17 @@
-<p>dashboard works!</p>
+<div class="create-dashboard-button-container">
+    <button nz-button nzType="primary" nzSize="large" class="create-dashboard-button">
+        <i nz-icon nzType="plus"></i>
+        Create Dashboard
+    </button>
+</div>
+
+<nz-list nzGrid>
+    <div nz-row [nzGutter]="16">
+        <div nz-col [nzXXl]="6" [nzXl]="6" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let item of data">
+            <nz-list-item>
+                <nz-card>
+                    <nz-card-meta [nzTitle]="item.title" nzDescription="This is the description"></nz-card-meta>
+                </nz-card>
+            </nz-list-item>
+        </div>
+    </div>

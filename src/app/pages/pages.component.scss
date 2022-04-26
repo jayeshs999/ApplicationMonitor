@@ -36,7 +36,7 @@
     transition: all .3s;
   }
   
-  .sidebar-logo img {
+  .sidebar-logo i {
     display: inline-block;
     height: 32px;
     width: 32px;
@@ -52,6 +52,24 @@
     vertical-align: middle;
   }
   
+  .user-logo {
+    position: relative;
+    height: 64px;
+    padding-left: 24px;
+    overflow: hidden;
+    line-height: 64px;
+    transition: all .3s;
+  }
+
+  .user-logo h2 {
+    display: inline-block;
+    margin: 0 0 0 20px;
+    font-weight: 600;
+    font-size: 20px;
+    font-family: Avenir,Helvetica Neue,Arial,Helvetica,sans-serif;
+    vertical-align: middle;
+  }
+
   nz-header {
     padding: 0;
     width: 100%;
