@@ -44,7 +44,7 @@
       </nz-form-item>
       <nz-form-item>
         <nz-form-label nzFor="Groups">Groups</nz-form-label>
-        <nz-select nzPlaceHolder="Please select" name="groups" [(ngModel)]="userForm.groups">
+        <nz-select nzMode="multiple" nzPlaceHolder="Please select" name="groups" [(ngModel)]="userForm.groups">
           <nz-option *ngFor="let item of listGroups" [nzLabel]="item" [nzValue]="item"></nz-option>
         </nz-select>
       </nz-form-item>
