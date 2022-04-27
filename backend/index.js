@@ -2,9 +2,12 @@ const express = require("express");
 const uuid = require('uuid');
 const session = require('express-session');
 var cors = require('cors');
+var format = require('pg-format')
 require('dotenv').config();
 const { Pool } = require('pg');
 const logout = require('./controllers/logout')
+const nodes_and_databases = require('./controllers/get_nodes_databases')
+const get_groups = require("./controllers/get_groups")
 
 const pool = new Pool({
     user: process.env.PGUSER,
@@ -33,6 +36,7 @@ app.use(session({
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 app.use(cors({
     origin: true,
     cookie : {secure:false},
@@ -92,6 +96,51 @@ app.get('/api/check-login', (req, res) => {
 app.get('/api/logout', (req, res) => {
     return logout(req, res, pool);
 });
+
+app.get('/api/get-nodes-and-databases', (req, res) => {
+    // temp = nodes_and_databases(req, res, pool);
+    // console.log(temp)
+    nodes_and_databases(req, res, pool);
+})
+
+app.get('/api/get-group', (req, res) => {
+    get_groups(req, res, pool);
+})
+
+
+app.post('/api/add-node', (req, res) => {
+    // console.log(req.session)
+    if (req.session.user != "admin") {
+        // console.log("Haha")
+        res.status(405).json({err: "Does not have admin access"})
+    }
+    else{
+        pool.query("INSERT INTO node VALUES ($1, $2)", [req.ip, req.name], (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).json({err: "Some error occurred"});
+            }
+            else {
+                temp = []
+                for (const l in req.groups){
+                    temp[l] = [req.ip, req.groups[l]];
+                }
+
+                pool.query(format('INSERT INTO NodeGroup (IP, group_name) VALUES %L', temp), (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).json({err: "Some error occurred"});
+                    }
+                    else{
+                        res.status(200).json({message: "Node added successfully"});
+                    }
+                })
+            }
+        })
+    }
+})
+
+
 
 var server = app.listen(8081, function () {
     var host = server.address().address
