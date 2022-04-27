@@ -48,7 +48,6 @@ CREATE TABLE Databases (
     database_id varchar(40) NOT NULL,
     IP varchar(20),
     name varchar(20),
-    Description varchar(500),
     Primary Key (database_id),
     Foreign Key (IP) references Node
 );

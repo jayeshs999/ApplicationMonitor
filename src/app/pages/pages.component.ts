@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { API } from '../API';
+import { HttpServiceService } from '../http-service.service';
 
 @Component({
   selector: 'app-pages',
@@ -20,19 +22,26 @@ export class PagesComponent implements OnInit {
       icon : 'bell'
     },
     {
-      name : 'Settings',
-      url : '/pages/settings',
-      icon : 'setting'
-    },
-    {
       name : 'Visualize',
       url : '/pages/visualize',
       icon : 'area-chart'
     }
   ]
-  constructor() { }
+  constructor(private httpService : HttpServiceService) { }
 
   ngOnInit(): void {
+    this.httpService.getOrRedirectToLogin(API.ServerURL + API.CheckLoginURL).subscribe({
+      next : (res:any) => {
+        console.log(res)
+        if(res.user == 'admin'){
+          this.links.push(    {
+            name : 'Settings',
+            url : '/pages/settings',
+            icon : 'setting'
+          })
+        }
+      }
+    });
 
   }
 

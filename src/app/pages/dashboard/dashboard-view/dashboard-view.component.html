@@ -1,1 +1,15 @@
-<app-line-chart></app-line-chart>
+<nz-tabset>
+    <nz-tab nzTitle="Node statistics">
+        <nz-select nzSize="large" nzMode="multiple" nzPlaceHolder="Please select the nodes to track" name="Node">
+            <nz-option *ngFor="let item of listNodes" [nzLabel]="item" [nzValue]="item"></nz-option>
+          </nz-select>
+        <app-line-chart></app-line-chart>
+    </nz-tab>
+    <nz-tab nzTitle="Database statistics">
+        <nz-select nzSize="large" nzMode="multiple" nzPlaceHolder="Please select">
+            <nz-option-group *ngFor="let optionGroup of listDatabases" [nzLabel]="optionGroup.node" >
+                <nz-option *ngFor="let option of optionGroup.databases" [nzValue]="option" [nzLabel]="option"></nz-option>
+            </nz-option-group>
+          </nz-select>
+    </nz-tab>
+</nz-tabset>

@@ -1,33 +1,69 @@
 <nz-tabset>
-    <nz-tab nzTitle="Add node">
-      <form [formGroup]="nodeform" class="login-form">
-        <label for="IP">IP: </label>
-        <input class="inp" id="IP" type="text" formControlName="IP">
-        <label for="Name">Name: </label>
-        <input class = "inp" id="Name" type="text" formControlName="Name"><br><br>
-        <button class="login-form-button login-form-margin">Add</button>
+  <nz-tab nzTitle="Add node">
+    <form nzForm class="login-form">
+      <nz-form-item>
+        <label for="IP">IP:</label>
+        <input class="inp" name="IP" type="text" [(ngModel)]="nodeForm.ip">
+      </nz-form-item>
+      <nz-form-item>
+        <label for="Name">Name:</label>
+        <input class="inp" name="Name" type="text" [(ngModel)]="nodeForm.name">
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="Groups">Groups</nz-form-label>
+        <nz-select name="groups" nzMode="multiple" nzPlaceHolder="Please select" [(ngModel)]="nodeForm.groups">
+          <nz-option *ngFor="let item of listGroups" [nzLabel]="item" [nzValue]="item"></nz-option>
+        </nz-select>
+      </nz-form-item>
+      <button nz-button class="login-form-button login-form-margin" (click)="addNode()">Add</button>
+    </form>
+  </nz-tab>
+  <nz-tab nzTitle="Add group">
+    <form nzForm [formGroup]="groupForm" class="login-form">
+      <nz-form-label nzFor="Name">Name</nz-form-label>
+      <input class="inp" id="Name" type="text" formControlName="name">
+      <nz-form-label nzFor="Description">Description</nz-form-label>
+      <input class="inp" id="Description" type="text" formControlName="description"><br><br>
+      <button nz-button class="login-form-button login-form-margin" (click)="addGroup()">Add</button>
+    </form>
+  </nz-tab>
+  <nz-tab nzTitle="Register user">
+    <form class="login-form">
+      <nz-form-item>
+        <label for="Username">Username:</label>
+        <input class="inp" name="Username" type="text" [(ngModel)]="userForm.username">
+      </nz-form-item>
+      <nz-form-item>
+        <label for="Password">Password:</label>
+        <input class="inp" name="Password" type="password" [(ngModel)]="userForm.password1">
+      </nz-form-item>
+      <nz-form-item>
+        <label for="cPassword">Confirm Password:</label>
+        <input class="inp" name="cPassword" type="password" [(ngModel)]="userForm.password2">
+        <h6 *ngIf="userForm.password1 != userForm.password2" style="color: red;">Passwords do not match</h6>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="Groups">Groups</nz-form-label>
+        <nz-select nzPlaceHolder="Please select" name="groups" [(ngModel)]="userForm.groups">
+          <nz-option *ngFor="let item of listGroups" [nzLabel]="item" [nzValue]="item"></nz-option>
+        </nz-select>
+      </nz-form-item>
+      <button nz-button class="login-form-button login-form-margin" (click)="addUser()">Register</button>
+    </form>
+  </nz-tab>
+  <nz-tab nzTitle="Add Database">
+    <form nzForm class="login-form">
+      <nz-form-item>
+        <label for="Name">Name:</label>
+        <input class="inp" name="Name" type="text" [(ngModel)]="databaseForm.name">
+      </nz-form-item>
+      <nz-form-item>
+        <label for="Node">Node:</label>
+        <nz-select nzPlaceHolder="Please select the node" name="Node" [(ngModel)]="databaseForm.node">
+          <nz-option *ngFor="let item of listNodes" [nzLabel]="item" [nzValue]="item"></nz-option>
+        </nz-select>
+      </nz-form-item>
+      <button nz-button class="login-form-button login-form-margin" (click)="addDatabase()">Add</button>
       </form>
-    </nz-tab>
-    <nz-tab nzTitle="Add group">
-      <form [formGroup]="groupform" class="login-form">
-        <label for="Name">Name: </label>
-        <input class="inp" id="Name" type="text" formControlName="Name">
-        <label for="Description">Description: </label>
-        <input class = "inp" id="Description" type="text" formControlName="Description"><br><br>
-        <button class="login-form-button login-form-margin">Add</button>
-      </form>
-    </nz-tab>
-    <nz-tab nzTitle="Register user">
-      <form [formGroup]="userform" class="login-form">
-        <label for="Username">Username:  </label>
-        <input class="inp" id="Username" type="text" formControlName="username">
-        <label for="Password">Password: </label>
-        <input class = "inp" id="Password" type="text" formControlName="password1"><br><br>
-        <label for="cPassword">Confirm Password: </label>
-        <input class = "inp" id="cPassword" type="text" formControlName="password2"><br><br>
-        <label for="gname">Group name:  </label>
-        <input class = "inp" id="gname" type="text" formControlName="group_name"><br><br>
-        <button class="login-form-button login-form-margin">Register</button>
-      </form>
-    </nz-tab>
+  </nz-tab>
 </nz-tabset>

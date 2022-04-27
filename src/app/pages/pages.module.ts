@@ -28,7 +28,9 @@ import { DashboardViewComponent } from './dashboard/dashboard-view/dashboard-vie
 import { ChartsModule } from '../charts/charts.module';
 import { AlertsComponent } from './alerts/alerts.component';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select'
 @NgModule({
   declarations: [
     PagesComponent,
@@ -61,7 +63,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     NzCardModule,
     NzGridModule,
     ChartsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NzDropDownModule,
+    NzInputModule,
+    NzSelectModule
   ]
 })
 export class PagesModule { }
