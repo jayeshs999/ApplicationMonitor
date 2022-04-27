@@ -24,6 +24,8 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { DashboardViewComponent } from './dashboard/dashboard-view/dashboard-view.component';
+import { ChartsModule } from '../charts/charts.module';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
     DashboardComponent,
     SettingsComponent,
     HeaderComponent,
+    DashboardViewComponent,
   ],
   imports: [
     CommonModule,
@@ -53,7 +56,8 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
     NzDividerModule,
     NzListModule,
     NzCardModule,
-    NzGridModule
+    NzGridModule,
+    ChartsModule
   ]
 })
 export class PagesModule { }
