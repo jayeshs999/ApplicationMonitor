@@ -1,37 +1,33 @@
 <nz-tabset>
     <nz-tab nzTitle="Add node">
-        <form nz-form>
-            <nz-form-item>
-              <nz-form-control>
-                <nz-input-group>
-                  <input type="text" nz-input  placeholder="Username" />
-                </nz-input-group>
-              </nz-form-control>
-            </nz-form-item>
-            <!-- <nz-form-item>
-              <nz-form-control nzErrorTip="Please input your Password!">
-                <nz-input-group nzPrefixIcon="lock">
-                  <input type="password" nz-input formControlName="password" placeholder="Password" />
-                </nz-input-group>
-              </nz-form-control>
-            </nz-form-item>
-            <div nz-row class="login-form-margin">
-              <div nz-col [nzSpan]="12">
-                <label nz-checkbox formControlName="remember">
-                  <span>Remember me</span>
-                </label>
-              </div>
-              <div nz-col [nzSpan]="12">
-                <a class="login-form-forgot">Forgot password</a>
-              </div>
-            </div>
-            <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button> -->
-        </form>
+      <form [formGroup]="nodeform" class="login-form">
+        <label for="IP">IP: </label>
+        <input class="inp" id="IP" type="text" formControlName="IP">
+        <label for="Name">Name: </label>
+        <input class = "inp" id="Name" type="text" formControlName="Name"><br><br>
+        <button class="login-form-button login-form-margin">Add</button>
+      </form>
     </nz-tab>
     <nz-tab nzTitle="Add group">
-
+      <form [formGroup]="groupform" class="login-form">
+        <label for="Name">Name: </label>
+        <input class="inp" id="Name" type="text" formControlName="Name">
+        <label for="Description">Description: </label>
+        <input class = "inp" id="Description" type="text" formControlName="Description"><br><br>
+        <button class="login-form-button login-form-margin">Add</button>
+      </form>
     </nz-tab>
-    <nz-tab nzTitle="Add user">
-
+    <nz-tab nzTitle="Register user">
+      <form [formGroup]="userform" class="login-form">
+        <label for="Username">Username:  </label>
+        <input class="inp" id="Username" type="text" formControlName="username">
+        <label for="Password">Password: </label>
+        <input class = "inp" id="Password" type="text" formControlName="password1"><br><br>
+        <label for="cPassword">Confirm Password: </label>
+        <input class = "inp" id="cPassword" type="text" formControlName="password2"><br><br>
+        <label for="gname">Group name:  </label>
+        <input class = "inp" id="gname" type="text" formControlName="group_name"><br><br>
+        <button class="login-form-button login-form-margin">Register</button>
+      </form>
     </nz-tab>
 </nz-tabset>

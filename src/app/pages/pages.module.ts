@@ -27,6 +27,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { DashboardViewComponent } from './dashboard/dashboard-view/dashboard-view.component';
 import { ChartsModule } from '../charts/charts.module';
 import { AlertsComponent } from './alerts/alerts.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { AlertsComponent } from './alerts/alerts.component';
     NzListModule,
     NzCardModule,
     NzGridModule,
-    ChartsModule
+    ChartsModule,
+    ReactiveFormsModule
   ]
 })
 export class PagesModule { }
