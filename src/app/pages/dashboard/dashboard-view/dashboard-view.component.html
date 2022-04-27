@@ -1,15 +1,52 @@
 <nz-tabset>
     <nz-tab nzTitle="Node statistics">
-        <nz-select nzSize="large" nzMode="multiple" nzPlaceHolder="Please select the nodes to track" name="Node">
-            <nz-option *ngFor="let item of listNodes" [nzLabel]="item" [nzValue]="item"></nz-option>
-          </nz-select>
+        <form nz-form [nzLayout]="'horizontal'">
+            <div nz-row nzJustify="space-around">
+                <div nz-col nzSpan="16">
+                    <nz-form-item>
+                        <nz-select name="nodeChoose" [(ngModel)]="nodesToTrack" nzSize="large" nzMode="multiple" nzPlaceHolder="Please select the nodes to track"
+                            name="Node">
+                            <nz-option *ngFor="let item of listNodes" [nzLabel]="item" [nzValue]="item"></nz-option>
+                        </nz-select>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5">
+                    <nz-form-item>
+                        <button nz-button nzType="primary" nzSize="large" class="create-dashboard-button">
+                            <i nz-icon nzType="plus"></i>
+                            Add cell
+                        </button>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+
         <app-line-chart></app-line-chart>
     </nz-tab>
     <nz-tab nzTitle="Database statistics">
-        <nz-select nzSize="large" nzMode="multiple" nzPlaceHolder="Please select">
-            <nz-option-group *ngFor="let optionGroup of listDatabases" [nzLabel]="optionGroup.node" >
-                <nz-option *ngFor="let option of optionGroup.databases" [nzValue]="option" [nzLabel]="option"></nz-option>
-            </nz-option-group>
-          </nz-select>
+        <form nz-form [nzLayout]="'horizontal'">
+            <div nz-row nzJustify="space-around">
+                <div nz-col nzSpan="16">
+                    <nz-form-item>
+                        <nz-select name="databaseChoose" [(ngModel)]="databasesToTrack" nzSize="large" nzMode="multiple" nzPlaceHolder="Please select the databases to track">
+                            <nz-option-group *ngFor="let optionGroup of listDatabases" [nzLabel]="optionGroup.node">
+                                <nz-option *ngFor="let option of optionGroup.databases" [nzValue]="{ 'node' : optionGroup.node, 'database' : option }" [nzLabel]="option">
+                                </nz-option>
+                            </nz-option-group>
+                        </nz-select>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5">
+                    <nz-form-item>
+                        <button nz-button nzType="primary" nzSize="large" class="create-dashboard-button">
+                            <i nz-icon nzType="plus"></i>
+                            Add cell
+                        </button>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
     </nz-tab>
 </nz-tabset>

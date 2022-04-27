@@ -32,7 +32,7 @@ export class SettingsComponent implements OnInit {
     username: '',
     password1: '',
     password2: '',
-    groups: ''
+    groups: []
   }
 
   databaseForm = {
@@ -69,7 +69,7 @@ export class SettingsComponent implements OnInit {
   }
 
   addGroup() {
-    this.httpService.postAndNotify(API.ServerURL + API.AddGroup, this.groupForm);
+    this.httpService.postAndNotify(API.ServerURL + API.AddGroup, this.groupForm.value);
   }
 
   addUser() {

@@ -1,6 +1,6 @@
 <nz-tabset>
   <nz-tab nzTitle="Add node">
-    <form nzForm class="login-form">
+    <form nz-form class="login-form">
       <nz-form-item>
         <label for="IP">IP:</label>
         <input class="inp" name="IP" type="text" [(ngModel)]="nodeForm.ip">
@@ -52,7 +52,7 @@
     </form>
   </nz-tab>
   <nz-tab nzTitle="Add Database">
-    <form nzForm class="login-form">
+    <form nz-form class="login-form">
       <nz-form-item>
         <label for="Name">Name:</label>
         <input class="inp" name="Name" type="text" [(ngModel)]="databaseForm.name">

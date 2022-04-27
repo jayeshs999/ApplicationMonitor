@@ -8,7 +8,8 @@ import { HttpServiceService } from 'src/app/http-service.service';
   styleUrls: ['./dashboard-view.component.scss']
 })
 export class DashboardViewComponent implements OnInit {
-  cells : any = []
+  nodeCells : any = [];
+  databaseCells : any = [];
   nodesToTrack : any[] = []
   databasesToTrack : any[] = []
   listNodes : any[] = []
