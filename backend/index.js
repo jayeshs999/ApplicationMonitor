@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors({
     origin: true,
-
+    cookie : {secure:false},
     credentials: true,
 
     methods: 'POST,GET,PUT,OPTIONS,DELETE'
@@ -73,21 +73,23 @@ app.post('/api/login', (req, res) => {
 
 app.use(function (req, res, next) {
     let sesid = req.sessionID;
-    pool.query('SELECT * FROM Sessions WHERE SessionID=(?)', (error, results) => {
+    console.log(req.sessionID)
+    pool.query('SELECT * FROM Sessions WHERE SessionID=($1)', [sesid], (error, results) => {
         if (error || results.rowCount == 0) {
             return res.status(401).send("Unauthorized");
         }
-        next(results.rows[0].username);
+        req.session.user = results.rows[0].username;
+        next();
     })
 });
 
-app.get('/api/check-login', (user,req, res) => {
-    console.log(user)
-    return res.json(user);
+app.get('/api/check-login', (req, res) => {
+    console.log(req.session.user);
+    return res.json({'sessionID' : req.sessionID});
 });
 
 
-app.get('/api/logout', (user,req, res) => {
+app.get('/api/logout', (req, res) => {
     return logout(req, res, pool);
 });
 

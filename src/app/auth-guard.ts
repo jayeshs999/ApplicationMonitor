@@ -20,7 +20,10 @@ export class AuthGuard implements CanActivate {
         state: RouterStateSnapshot): boolean | Promise<boolean> {
         return new Promise((resolve,reject)=>{
             this.httpService.get(API.ServerURL + API.CheckLoginURL, { withCredentials: true }).subscribe({
-                next: () => resolve(false),
+                next: () => {
+                    this.router.navigate(['/pages']);
+                    resolve(false)
+                },
                 error: (err) => {
                     resolve(true);
                 }
