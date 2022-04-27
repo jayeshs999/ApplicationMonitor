@@ -15,6 +15,8 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SettingsComponent } from './settings/settings.component';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzFormModule } from 'ng-zorro-antd/form';
 
 
 @NgModule({
@@ -36,7 +38,9 @@ import { SettingsComponent } from './settings/settings.component';
     NzDescriptionsModule,
     NzPageHeaderModule,
     NzButtonModule,
-    NzIconModule
+    NzIconModule,
+    NzTabsModule,
+    NzFormModule,
   ]
 })
 export class PagesModule { }
