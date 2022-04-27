@@ -20,6 +20,8 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { LoginComponent } from './login/login.component';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { AuthGuard } from './auth-guard';
 registerLocaleData(en);
 
 @NgModule({
@@ -41,9 +43,10 @@ registerLocaleData(en);
     NzPageHeaderModule,
     NzButtonModule,
     NzIconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NzNotificationModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [{ provide: NZ_I18N, useValue: en_US }, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

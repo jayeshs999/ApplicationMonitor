@@ -4,13 +4,13 @@
 <img src="./../../assets/logo/monitor.svg" class="img">
 </div>
 <h1><b>ApplicationMonitor</b></h1>
-<form [formGroup]="profileForm" class="login-form">
+<form [formGroup]="loginForm" class="login-form">
 
-    <label for="Username">Username: </label>
-    <input class="inp" id="Username" type="text" formControlName="Username">
-    <label for="Password">Password: </label>
-    <input class = "inp" id="Password" type="text" formControlName="Password"><br><br>
-    <button class="login-form-button login-form-margin">Log in</button>
+    <label for="Username">Username</label>
+    <input class="inp" id="Username" type="text" formControlName="username">
+    <label for="Password">Password</label>
+    <input class = "inp" id="Password" type="password" formControlName="password"><br><br>
+    <button class="login-form-button login-form-margin" (click)="login()">Log in</button>
 </form>
 </div>
 </div>
