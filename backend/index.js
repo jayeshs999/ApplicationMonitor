@@ -89,8 +89,7 @@ app.use(function (req, res, next) {
 });
 
 app.get('/api/check-login', (req, res) => {
-    console.log(req.session.user);
-    return res.json({'sessionID' : req.sessionID});
+    return res.json({'user' : req.session.user});
 });
 
 
