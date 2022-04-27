@@ -23,7 +23,7 @@
       <nz-form-label nzFor="Name">Name</nz-form-label>
       <input class="inp" id="Name" type="text" formControlName="name">
       <nz-form-label nzFor="Description">Description</nz-form-label>
-      <input class="inp" id="Description" type="text" formControlName="description"><br><br>
+      <input class="inp" id="Description" type="text" formControlName="description">
       <button nz-button class="login-form-button login-form-margin" (click)="addGroup()">Add</button>
     </form>
   </nz-tab>
@@ -58,12 +58,16 @@
         <input class="inp" name="Name" type="text" [(ngModel)]="databaseForm.name">
       </nz-form-item>
       <nz-form-item>
+        <nz-form-label nzFor="Description">Description</nz-form-label>
+        <input class="inp" id="Description" type="text" [(ngModel)]="databaseForm.description">
+      </nz-form-item>
+      <nz-form-item>
         <label for="Node">Node:</label>
         <nz-select nzPlaceHolder="Please select the node" name="Node" [(ngModel)]="databaseForm.node">
           <nz-option *ngFor="let item of listNodes" [nzLabel]="item" [nzValue]="item"></nz-option>
         </nz-select>
       </nz-form-item>
       <button nz-button class="login-form-button login-form-margin" (click)="addDatabase()">Add</button>
-      </form>
+    </form>
   </nz-tab>
 </nz-tabset>

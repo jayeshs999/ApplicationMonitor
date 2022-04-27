@@ -38,6 +38,7 @@ export class SettingsComponent implements OnInit {
   databaseForm = {
     name: '',
     node: '',
+    description: ''
   }
   constructor(private httpService: HttpServiceService, private router: Router) { }
 
