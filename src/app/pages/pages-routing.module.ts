@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AlertsComponent } from './alerts/alerts.component';
 import { DashboardViewComponent } from './dashboard/dashboard-view/dashboard-view.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PagesComponent } from './pages.component';
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path : 'settings',
         component : SettingsComponent,
+      },
+      {
+        path : 'alerts',
+        component : AlertsComponent
       },
       {
         path : '**',

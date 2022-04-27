@@ -26,6 +26,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { DashboardViewComponent } from './dashboard/dashboard-view/dashboard-view.component';
 import { ChartsModule } from '../charts/charts.module';
+import { AlertsComponent } from './alerts/alerts.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { ChartsModule } from '../charts/charts.module';
     SettingsComponent,
     HeaderComponent,
     DashboardViewComponent,
+    AlertsComponent
   ],
   imports: [
     CommonModule,
