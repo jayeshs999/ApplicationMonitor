@@ -8,6 +8,7 @@ const { Pool } = require('pg');
 const logout = require('./controllers/logout')
 const nodes_and_databases = require('./controllers/get_nodes_databases')
 const get_groups = require("./controllers/get_groups")
+const get_nodes = require("./controllers/get_nodes")
 
 const pool = new Pool({
     user: process.env.PGUSER,
@@ -103,10 +104,13 @@ app.get('/api/get-nodes-and-databases', (req, res) => {
     nodes_and_databases(req, res, pool);
 })
 
-app.get('/api/get-group', (req, res) => {
+app.get('/api/get-groups', (req, res) => {
     get_groups(req, res, pool);
 })
 
+app.get('/api/get-nodes', (req, res) => {
+    get_nodes(req, res, pool);
+})
 
 app.post('/api/add-node', (req, res) => {
     // console.log(req.session)
@@ -139,6 +143,8 @@ app.post('/api/add-node', (req, res) => {
         })
     }
 })
+
+
 
 
 
