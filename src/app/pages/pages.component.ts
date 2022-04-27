@@ -11,7 +11,7 @@ export class PagesComponent implements OnInit {
   links = [
     {
       name : 'Dashboard',
-      url : '/pages/dashboard',
+      url : '/pages/dashboards',
       icon : 'dashboard'
     },
     {
