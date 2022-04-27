@@ -18,12 +18,19 @@ import { SettingsComponent } from './settings/settings.component';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzFormModule } from 'ng-zorro-antd/form';
 
+import { HeaderComponent } from './header/header.component';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @NgModule({
   declarations: [
     PagesComponent,
     DashboardComponent,
     SettingsComponent,
+    HeaderComponent,
   ],
   imports: [
     CommonModule,
@@ -41,6 +48,12 @@ import { NzFormModule } from 'ng-zorro-antd/form';
     NzIconModule,
     NzTabsModule,
     NzFormModule,
+    NzAvatarModule,
+    NzIconModule,
+    NzDividerModule,
+    NzListModule,
+    NzCardModule,
+    NzGridModule
   ]
 })
 export class PagesModule { }
