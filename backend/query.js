@@ -9,11 +9,11 @@ const queryApi = new InfluxDB({url, token}).getQueryApi(org)
 const fluxQuery = 'from(bucket:"Trial") |> range(start: 0) |> filter(fn: (r) => r._measurement == "temperature")'
 
 const anotherQuery = 'from(bucket: "Project") \
-|> range(start: -10h) \
+|> range(start: -10h, stop: -0h) \
 |> filter(fn: (r) => r["_measurement"] == "cpu") \
 |> filter(fn: (r) => r["_field"] == "usage_system") \
 |> filter(fn: (r) => r["cpu"] == "cpu-total") \
-|> filter(fn: (r) => r["host"] == "Shreys-MBP") \
+|> filter(fn: (r) => r["host"] == "Shreys-MacBook-Pro.local") \
 |> aggregateWindow(every: 1h, fn: mean, createEmpty: false) \
 |> yield(name: "mean")'
 
@@ -41,19 +41,19 @@ const fluxObserver = {
   queryApi.queryRows(anotherQuery, fluxObserver)
 
 
-const writeApi = influxDB.getWriteApi(org, bucket)
+// const writeApi = influxDB.getWriteApi(org, bucket)
 
-writeApi.useDefaultTags({ region: 'west' })
+// writeApi.useDefaultTags({ region: 'west' })
 
-const point1 = new Point('temperature')
-  .tag('sensor_id', 'TLM01')
-  .floatField('value', 24.0)
+// const point1 = new Point('temperature')
+//   .tag('sensor_id', 'TLM01')
+//   .floatField('value', 24.0)
 
-console.log(` ${point1}`)
+// console.log(` ${point1}`)
 
 
-writeApi.writePoint(point1)
+// writeApi.writePoint(point1)
 
-writeApi.close().then(() => {
-  console.log('WRITE FINISHED')
-})
+// writeApi.close().then(() => {
+//   console.log('WRITE FINISHED')
+// })

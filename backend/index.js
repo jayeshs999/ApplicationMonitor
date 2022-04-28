@@ -9,7 +9,16 @@ const logout = require('./controllers/logout')
 const nodes_and_databases = require('./controllers/get_nodes_databases')
 const get_groups = require("./controllers/get_groups")
 const get_nodes = require("./controllers/get_nodes");
+const get_dashboard_data = require("./controllers/get_dashboard_data")
 const { request } = require("http");
+const { InfluxDB, Point } = require('@influxdata/influxdb-client')
+const { appendFile } = require('fs')
+
+const url = process.env.INFLUX_URL || ''
+const token = process.env.INFLUX_TOKEN
+const org = process.env.INFLUX_ORG || ''
+
+const influx = new InfluxDB({url, token}).getQueryApi(org)
 
 const pool = new Pool({
     user: process.env.PGUSER,
@@ -221,7 +230,10 @@ app.post('/api/add-database', (req, res) => {
     }
 })
 
-
+app.get('/api/get-dashboard-data', (req, res) => {
+    get_dashboard_data(req, res, influx)
+    // queryApi.queryRows(anotherQuery, fluxObserver)
+})
 
 var server = app.listen(8081, function () {
     var host = server.address().address

@@ -1,4 +1,4 @@
-const e = require("express")
+// const e = require("express")
 
 function get_nodes(req, res, pool){
     // const query = "select ip, database_id from databases order by ip, database_id;";
