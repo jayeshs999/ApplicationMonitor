@@ -49,7 +49,7 @@
                     <nz-form-item>
                         <nz-form-label [nzSpan]="6" nzFor="name">Name</nz-form-label>
                         <nz-form-control [nzSpan]="14">
-                            <input nz-input placeholder="Enter a name" id="name" type="text"
+                            <input nz-input placeholder="Enter a name" id="name" type="text" name="name"
                                 [(ngModel)]="nodeCellForm.name">
                         </nz-form-control>
                     </nz-form-item>
@@ -83,7 +83,7 @@
                             </nz-select>
                         </nz-form-control>
                         <nz-form-control [nzSpan]="7" *ngIf="nodeCellForm.window.type == 'custom'">
-                            <input nz-input placeholder="Enter custom window" id="customWindow" type="text"
+                            <input nz-input placeholder="Enter custom window" id="customWindow" type="text" name ="val"
                                 [(ngModel)]="nodeCellForm.window.value">
                         </nz-form-control>
                     </nz-form-item>
@@ -145,7 +145,7 @@
                     <nz-form-item>
                         <nz-form-label [nzSpan]="6" nzFor="name">Name</nz-form-label>
                         <nz-form-control [nzSpan]="14">
-                            <input nz-input placeholder="Enter a name" id="name" type="text"
+                            <input nz-input placeholder="Enter a name" id="name" type="text" name="name"
                                 [(ngModel)]="databaseCellForm.name">
                         </nz-form-control>
                     </nz-form-item>
@@ -179,7 +179,7 @@
                             </nz-select>
                         </nz-form-control>
                         <nz-form-control [nzSpan]="7" *ngIf="databaseCellForm.window.type == 'custom'">
-                            <input nz-input placeholder="Enter custom window" id="customWindow" type="text"
+                            <input nz-input placeholder="Enter custom window" id="customWindow" type="text" name="name"
                                 [(ngModel)]="databaseCellForm.window.value">
                         </nz-form-control>
                     </nz-form-item>

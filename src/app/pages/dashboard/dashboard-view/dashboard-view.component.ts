@@ -126,7 +126,7 @@ export class DashboardViewComponent implements OnInit {
       'database_cell_data' : this.nodeCells.map((ele: any) => {ele['window'] = (ele['window']['type'] == 'custom' && ele['window']['value']) || ele['window']['type']; return ele}), 
     }
 
-    this.httpService.get(API.ServerURL + API.GetDashboardData, form).subscribe({
+    this.httpService.post(API.ServerURL + API.GetDashboardData, form).subscribe({
       next : (res: any) => {
         for(let i = 0; i < this.nodeCells.length; i++){
           this.nodeCells[i]['data'] = res[i]['data'];

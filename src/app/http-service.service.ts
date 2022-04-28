@@ -25,7 +25,7 @@ export class HttpServiceService {
         this.notification.success('Success',res.message);
       },
       error: (err) => {
-        this.notification.error('Error',err.error.message);
+        this.notification.error('Error',err.error.err);
       }
     });
   }
