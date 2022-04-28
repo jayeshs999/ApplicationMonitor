@@ -57,7 +57,7 @@ export class DashboardViewComponent implements OnInit {
   constructor(private httpService:HttpServiceService) { }
 
   ngOnInit(): void {
-    this.httpService.get(API.ServerURL + API.GetNodesAndDatabases).subscribe({
+    this.httpService.getOrRedirectToLogin(API.ServerURL + API.GetNodesAndDatabases).subscribe({
       next: (res: any) => {
         this.listDatabases = [];
         let temp = {};
@@ -75,9 +75,12 @@ export class DashboardViewComponent implements OnInit {
               this.listDatabases.push( { 'node' : key, 'databases' : temp[key] } );
           }
         }
+      }
+    })
 
-        this.listNodes = res.data.map((ele: any) => ele.ip);
-        this.listNodes = [...new Set(this.listNodes)];
+    this.httpService.getOrRedirectToLogin(API.ServerURL + API.GetNodes).subscribe({
+      next: (res: any) => {
+        this.listNodes = res.data;
       }
     })
   }
