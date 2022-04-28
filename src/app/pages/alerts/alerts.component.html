@@ -1,22 +1,48 @@
 <div class="create-alert-button-container">
-    <button nz-button nzType="primary" nzSize="large" class="create-alert-button">
+    <button nz-button nzType="primary" nzSize="large" class="create-alert-button" (click)="createModalOpen = true">
         <i nz-icon nzType="plus"></i>
         Create Alert
     </button>
 </div>
 
+<nz-modal [(nzVisible)]="createModalOpen" nzTitle="Create Alert" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+        <form nz-form>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzFor="name">Name</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <input nz-input name="name" type="name" id="name">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzFor="name"></nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <input nz-input name="name" type="name" id="name">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzFor="name">Name</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <input nz-input name="name" type="name" id="name">
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-container>
+</nz-modal>
+
 <nz-list nzGrid>
     <div nz-row [nzGutter]="16">
         <div nz-col [nzXXl]="6" [nzXl]="6" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let item of data">
             <nz-list-item (click)="1+1">
-                <div class="card border-0" style="width: 18rem;"  style="background-color: rgb(41,41,51);height: 15vh;">
+                <div class="card border-0" style="width: 18rem;" style="background-color: rgb(41,41,51);height: 15vh;">
                     <div class="card-body">
-                      <h5 class="card-title" style="color: rgb(21, 104, 246);">{{item.title}}</h5>
-                      <h6 class="card-subtitle mb-2 text-muted" style="font-size: small;">Description</h6>
-                      <p class="card-text text-muted" style="font-size: smaller;"> Created on</p>
-                      <a class="card-link"><i nz-icon nzType="eye" nzTheme="outline"></i></a>
+                        <h5 class="card-title" style="color: rgb(21, 104, 246);">{{item.title}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted" style="font-size: small;">Description</h6>
+                        <p class="card-text text-muted" style="font-size: smaller;"> Created on</p>
+                        <a class="card-link"><i nz-icon nzType="eye" nzTheme="outline"></i></a>
                     </div>
-                  </div>
+                </div>
             </nz-list-item>
         </div>
     </div>
+</nz-list>

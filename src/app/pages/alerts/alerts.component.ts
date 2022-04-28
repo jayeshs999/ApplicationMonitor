@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./alerts.component.scss']
 })
 export class AlertsComponent implements OnInit {
+  
+  createModalOpen : boolean = false;
 
   data = [
     {
@@ -27,10 +29,18 @@ export class AlertsComponent implements OnInit {
       title: 'Title 6'
     }
   ];
-  
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  handleCancel(){
+    this.createModalOpen = false
+  }
+
+  handleOk(){
+    this.createModalOpen = false;
   }
 
 }

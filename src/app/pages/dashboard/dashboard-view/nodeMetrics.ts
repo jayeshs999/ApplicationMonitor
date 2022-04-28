@@ -1,0 +1,1 @@
+export const NodeMetrics : any[] = ['cpu','mem']

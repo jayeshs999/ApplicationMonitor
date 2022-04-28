@@ -30,7 +30,10 @@ import { AlertsComponent } from './alerts/alerts.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzSelectModule } from 'ng-zorro-antd/select'
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+
 @NgModule({
   declarations: [
     PagesComponent,
@@ -66,7 +69,9 @@ import { NzSelectModule } from 'ng-zorro-antd/select'
     ReactiveFormsModule,
     NzDropDownModule,
     NzInputModule,
-    NzSelectModule
+    NzSelectModule,
+    NzModalModule,
+    NzEmptyModule
   ]
 })
 export class PagesModule { }

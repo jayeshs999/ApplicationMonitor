@@ -1,11 +1,30 @@
+<div nz-row nzJustify="space-around">
+    <div nz-col nzSpan="16">
+        <nz-form-item>
+            <nz-select name="timePeriod" [(ngModel)]="timePeriod" nzSize="large"
+                nzPlaceHolder="Please select the time period" name="Node">
+                <nz-option *ngFor="let item of timePeriods" [nzLabel]="item.name" [nzValue]="item.value"></nz-option>
+            </nz-select>
+        </nz-form-item>
+    </div>
+    <div nz-col nzSpan="3"></div>
+    <div nz-col nzSpan="5">
+        <nz-form-item>
+            <button nz-button nzType="primary" nzSize="large" class="create-dashboard-button"
+                (click)="refreshDashboard()">
+                <i nz-icon nzType="redo"></i>
+            </button>
+        </nz-form-item>
+    </div>
+</div>
 <nz-tabset>
     <nz-tab nzTitle="Node statistics">
         <form nz-form [nzLayout]="'horizontal'">
             <div nz-row nzJustify="space-around">
                 <div nz-col nzSpan="16">
                     <nz-form-item>
-                        <nz-select name="nodeChoose" [(ngModel)]="nodesToTrack" nzSize="large" nzMode="multiple" nzPlaceHolder="Please select the nodes to track"
-                            name="Node">
+                        <nz-select name="nodeChoose" [(ngModel)]="nodesToTrack" nzSize="large" nzMode="multiple"
+                            nzPlaceHolder="Please select the nodes to track" name="Node">
                             <nz-option *ngFor="let item of listNodes" [nzLabel]="item" [nzValue]="item"></nz-option>
                         </nz-select>
                     </nz-form-item>
@@ -13,7 +32,8 @@
                 <div nz-col nzSpan="3"></div>
                 <div nz-col nzSpan="5">
                     <nz-form-item>
-                        <button nz-button nzType="primary" nzSize="large" class="create-dashboard-button">
+                        <button nz-button nzType="primary" nzSize="large" class="create-dashboard-button"
+                            (click)="nodeCellModalOpen = true">
                             <i nz-icon nzType="plus"></i>
                             Add cell
                         </button>
@@ -21,17 +41,85 @@
                 </div>
             </div>
         </form>
-
-        <app-line-chart></app-line-chart>
+        <!--Node Modal-->
+        <nz-modal [(nzVisible)]="nodeCellModalOpen" nzTitle="Add cell" (nzOnCancel)="nodeCellModalOpen = false"
+            (nzOnOk)="handleCreateCell('node')">
+            <ng-container *nzModalContent>
+                <form nz-form>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="name">Name</nz-form-label>
+                        <nz-form-control [nzSpan]="14">
+                            <input nz-input placeholder="Enter a name" id="name" type="text"
+                                [(ngModel)]="nodeCellForm.name">
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="metric">Metric</nz-form-label>
+                        <nz-form-control [nzSpan]="14">
+                            <nz-select nzPlaceHolder="Please select a metric" name="metric"
+                                [(ngModel)]="nodeCellForm.metric">
+                                <nz-option *ngFor="let item of nodeMetrics" [nzLabel]="item" [nzValue]="item">
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="aggFunction">Aggregate Fn</nz-form-label>
+                        <nz-form-control [nzSpan]="14">
+                            <nz-select nzPlaceHolder="Select an aggregation function" name="aggFunction"
+                                [(ngModel)]="nodeCellForm.aggregateFunction">
+                                <nz-option *ngFor="let item of aggregateFunctions" [nzLabel]="item" [nzValue]="item">
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="name">Window Period</nz-form-label>
+                        <nz-form-control [nzSpan]="7">
+                            <nz-select nzPlaceHolder="Select a window" name="window"
+                                [(ngModel)]="nodeCellForm.window.type">
+                                <nz-option *ngFor="let item of windowPeriods" [nzLabel]="item.name"
+                                    [nzValue]="item.value"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                        <nz-form-control [nzSpan]="7" *ngIf="nodeCellForm.window.type == 'custom'">
+                            <input nz-input placeholder="Enter custom window" id="customWindow" type="text"
+                                [(ngModel)]="nodeCellForm.window.value">
+                        </nz-form-control>
+                    </nz-form-item>
+                </form>
+            </ng-container>
+        </nz-modal>
+        <!---->
+        <nz-list nzGrid>
+            <div nz-row [nzGutter]="16">
+                <div nz-col [nzXXl]="12" [nzXl]="12" [nzLg]="12" [nzMd]="24" [nzSm]="24" [nzXs]="24"
+                    *ngFor="let item of nodeCells">
+                    <nz-list-item>
+                        <app-line-chart></app-line-chart>
+                    </nz-list-item>
+                </div>
+            </div>
+        </nz-list>
+        <nz-empty [nzNotFoundContent]="contentTpl" *ngIf="nodeCells.length == 0" style="padding-top: 10%;">
+            <ng-template #contentTpl>
+                <span>
+                    Create some cells
+                </span>
+            </ng-template>
+        </nz-empty>
     </nz-tab>
     <nz-tab nzTitle="Database statistics">
         <form nz-form [nzLayout]="'horizontal'">
             <div nz-row nzJustify="space-around">
                 <div nz-col nzSpan="16">
                     <nz-form-item>
-                        <nz-select name="databaseChoose" [(ngModel)]="databasesToTrack" nzSize="large" nzMode="multiple" nzPlaceHolder="Please select the databases to track">
+                        <nz-select name="databaseChoose" [(ngModel)]="databasesToTrack" nzSize="large" nzMode="multiple"
+                            nzPlaceHolder="Please select the databases to track">
                             <nz-option-group *ngFor="let optionGroup of listDatabases" [nzLabel]="optionGroup.node">
-                                <nz-option *ngFor="let option of optionGroup.databases" [nzValue]="{ 'node' : optionGroup.node, 'database' : option }" [nzLabel]="option">
+                                <nz-option *ngFor="let option of optionGroup.databases"
+                                    [nzValue]="{ 'node' : optionGroup.node, 'database' : option.database_id }"
+                                    [nzLabel]="option.name">
                                 </nz-option>
                             </nz-option-group>
                         </nz-select>
@@ -40,7 +128,8 @@
                 <div nz-col nzSpan="3"></div>
                 <div nz-col nzSpan="5">
                     <nz-form-item>
-                        <button nz-button nzType="primary" nzSize="large" class="create-dashboard-button">
+                        <button nz-button nzType="primary" nzSize="large" class="create-dashboard-button"
+                            (click)="databaseCellModalOpen = true">
                             <i nz-icon nzType="plus"></i>
                             Add cell
                         </button>
@@ -48,5 +137,72 @@
                 </div>
             </div>
         </form>
+        <!--Database Modal-->
+        <nz-modal [(nzVisible)]="databaseCellModalOpen" nzTitle="Add cell" (nzOnCancel)="databaseCellModalOpen = false"
+            (nzOnOk)="handleCreateCell('database')">
+            <ng-container *nzModalContent>
+                <form nz-form>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="name">Name</nz-form-label>
+                        <nz-form-control [nzSpan]="14">
+                            <input nz-input placeholder="Enter a name" id="name" type="text"
+                                [(ngModel)]="databaseCellForm.name">
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="metric">Metric</nz-form-label>
+                        <nz-form-control [nzSpan]="14">
+                            <nz-select nzPlaceHolder="Please select a metric" name="metric"
+                                [(ngModel)]="databaseCellForm.metric">
+                                <nz-option *ngFor="let item of databaseMetrics" [nzLabel]="item" [nzValue]="item">
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="aggFunction">Aggregate Fn</nz-form-label>
+                        <nz-form-control [nzSpan]="14">
+                            <nz-select nzPlaceHolder="Select an aggregation function" name="aggFunction"
+                                [(ngModel)]="databaseCellForm.aggregateFunction">
+                                <nz-option *ngFor="let item of aggregateFunctions" [nzLabel]="item" [nzValue]="item">
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6" nzFor="name">Window Period</nz-form-label>
+                        <nz-form-control [nzSpan]="7">
+                            <nz-select nzPlaceHolder="Select a window" name="window"
+                                [(ngModel)]="databaseCellForm.window.type">
+                                <nz-option *ngFor="let item of windowPeriods" [nzLabel]="item.name"
+                                    [nzValue]="item.value"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                        <nz-form-control [nzSpan]="7" *ngIf="databaseCellForm.window.type == 'custom'">
+                            <input nz-input placeholder="Enter custom window" id="customWindow" type="text"
+                                [(ngModel)]="databaseCellForm.window.value">
+                        </nz-form-control>
+                    </nz-form-item>
+                </form>
+            </ng-container>
+        </nz-modal>
+        <!---->
+        <nz-list nzGrid>
+            <div nz-row [nzGutter]="16">
+                <div nz-col [nzXXl]="12" [nzXl]="12" [nzLg]="12" [nzMd]="24" [nzSm]="24" [nzXs]="24"
+                    *ngFor="let item of databaseCells">
+                    <nz-list-item>
+                        <app-line-chart></app-line-chart>
+                    </nz-list-item>
+                </div>
+            </div>
+        </nz-list>
+        <nz-empty [nzNotFoundContent]="contentTpl" *ngIf="databaseCells.length == 0" style="padding-top: 10%;">
+            <ng-template #contentTpl>
+                <span>
+                    Create some cells
+                </span>
+            </ng-template>
+        </nz-empty>
     </nz-tab>
 </nz-tabset>
