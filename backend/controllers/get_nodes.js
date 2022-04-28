@@ -7,7 +7,7 @@ function get_nodes(req, res, pool){
     pool.query('select ip from node', (err, result) => {
         temp = []
         // console.log(result.rows[0]['name'])
-        console.log(result)
+        // console.log(result)
         for (const el in result.rows){
             // console.log(result.rows[el])
             // console.log(el)
