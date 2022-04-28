@@ -123,7 +123,7 @@ export class DashboardViewComponent implements OnInit {
     let form : any = {
       'time_period' : this.timePeriod,
       'node_cell_data' : this.nodeCells.map((ele: any) => {ele['window'] = (ele['window']['type'] == 'custom' && ele['window']['value']) || ele['window']['type']; return ele}),
-      'database_cell_data' : this.nodeCells.map((ele: any) => {ele['window'] = (ele['window']['type'] == 'custom' && ele['window']['value']) || ele['window']['type']; return ele}), 
+      'database_cell_data' : this.databaseCells.map((ele: any) => {ele['window'] = (ele['window']['type'] == 'custom' && ele['window']['value']) || ele['window']['type']; return ele}), 
     }
 
     this.httpService.post(API.ServerURL + API.GetDashboardData, form).subscribe({
