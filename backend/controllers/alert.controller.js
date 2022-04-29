@@ -53,7 +53,7 @@ function getAlertHistory(req,res,pool){
             res.status(500).json({err: "Some error occurred"});
         }
         else{
-            res.status(200).json({alogs: result.rows});
+            res.status(200).json({logs: result.rows});
         }
     });
 }
@@ -74,5 +74,6 @@ module.exports = {
     create : createAlert,
     getList : getAlertList,
     delete : deleteAlert,
-    getLogs : getAlertHistory
+    getLogs : getAlertHistory,
+    acknowledge : acknowledgeAlert
 }

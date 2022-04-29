@@ -48,13 +48,14 @@ export class SettingsComponent implements OnInit {
         if (res.user == 'admin') {
           this.httpService.getOrRedirectToLogin(API.ServerURL + API.GetGroups).subscribe({
             next: (res: any) => {
-              this.listGroups = res.data;
+              console.log(res);
+              this.listGroups = res.data.map((ele)=>ele.name);
             }
           });
 
           this.httpService.get(API.ServerURL + API.GetNodes).subscribe({
             next: (res: any) => {
-              this.listNodes = res.data;
+              this.listNodes = res.data.map((ele)=>ele.ip);
             }
           })
         }

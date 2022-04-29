@@ -106,7 +106,7 @@ export class AlertsComponent implements OnInit {
 
     this.httpService.getOrRedirectToLogin(API.ServerURL + API.GetNodes).subscribe({
       next: (res: any) => {
-        this.listNodes = res.data;
+        this.listNodes = res.data.map((ele) => ele.ip);
       }
     })
 

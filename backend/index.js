@@ -5,13 +5,18 @@ var cors = require('cors');
 var format = require('pg-format')
 require('dotenv').config();
 const { Pool } = require('pg');
-const logout = require('./controllers/logout')
-const nodes_and_databases = require('./controllers/get_nodes_databases')
-const get_groups = require("./controllers/get_groups")
-const get_nodes = require("./controllers/get_nodes");
-const get_dashboard_data = require("./controllers/get_dashboard_data")
 const { InfluxDB, Point } = require('@influxdata/influxdb-client')
+
+const login = require('./controllers/login');
+const logout = require('./controllers/logout')
+const databaseController = require('./controllers/database.controller')
+const nodeController = require('./controllers/node.controller')
+const groupController = require('./controllers/group.controller')
 const alertController = require('./controllers/alert.controller')
+const get_dashboard_data = require("./controllers/get_dashboard_data");
+const userController = require("./controllers/user.controller");
+
+
 
 const url = process.env.INFLUX_URL || ''
 const token = process.env.INFLUX_TOKEN
@@ -57,46 +62,21 @@ app.use(cors({
 
 
 app.post('/api/login', (req, res) => {
-    let username = req.body.username;
-    let password = req.body.password;
-    console.log(username, password);
-
-    pool.query('SELECT * FROM Users WHERE username=($1) AND password=($2)', [username, password], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err);
-        }
-        else {
-            if (result.rowCount == 0) {
-                res.status(401).send("Invalid username or password");
-            }
-            else {
-                pool.query('INSERT INTO Sessions VALUES ($1,$2,$3)', [req.sessionID, result.rows[0].username, new Date()], (err, result) => {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).send(err);
-                    }
-                    else {
-                        res.status(200).send(result.rows[0]);
-                    }
-                });
-            }
-        }
-    });
+   login(req, res, pool);
 });
 
 app.use(function (req, res, next) {
-    // let sesid = req.sessionID;
-    // console.log(req.sessionID)
-    // pool.query('SELECT * FROM Sessions WHERE SessionID=($1)', [sesid], (error, results) => {
-    //     if (error || results.rowCount == 0) {
-    //         return res.status(401).send("Unauthorized");
-    //     }
-    //     req.session.user = results.rows[0].username;
-    //     next();
-    // })
-    req.session.user = "admin";
-    next();
+    let sesid = req.sessionID;
+    console.log(req.sessionID)
+    pool.query('SELECT * FROM Sessions WHERE SessionID=($1)', [sesid], (error, results) => {
+        if (error || results.rowCount == 0) {
+            return res.status(401).send("Unauthorized");
+        }
+        req.session.user = results.rows[0].username;
+        next();
+    })
+    // req.session.user = "admin";
+    // next();
 });
 
 app.get('/api/check-login', (req, res) => {
@@ -108,142 +88,79 @@ app.get('/api/logout', (req, res) => {
     return logout(req, res, pool);
 });
 
-app.get('/api/get-nodes-and-databases', (req, res) => {
+app.get('/api/database/list', (req, res) => {
     // temp = nodes_and_databases(req, res, pool);
     // console.log(temp)
-    nodes_and_databases(req, res, pool);
+    databaseController.getList(req, res, pool);
 })
 
-app.get('/api/get-groups', (req, res) => {
-    get_groups(req, res, pool);
+app.post('/api/database/create', (req, res) => {
+    databaseController.create(req, res, pool);
 })
 
-app.get('/api/get-nodes', (req, res) => {
-    get_nodes(req, res, pool);
+app.post('/api/database/delete', (req, res) => {
+    databaseController.delete(req, res, pool);
 })
 
-app.post('/api/add-node', (req, res) => {
-    // console.log(req.session)
-    if (req.session.user != "admin") {
-        // console.log("Haha")
-        res.status(405).json({err: "Does not have admin access"})
-    }
-    else{
-        // console.log("Logged in")
-        // console.log(req.body.ip)
-        // console.log(req.body.name)
-        // console.log(req.body.groups)
-        pool.query("INSERT INTO node VALUES ($1, $2)", [req.body.ip, req.body.name], (err, result) => {
-            if (err) {
-                // console.log("Hehehe");
-                console.log(err);
-                res.status(500).json({err: "Some error occurred"});
-            }
-            else {
-                temp = []
-                for (const l in req.body.groups){
-                    temp[l] = [req.body.ip, req.body.groups[l]];
-                }
-
-                pool.query(format('INSERT INTO NodeGroup (IP, group_name) VALUES %L', temp), (err, result) => {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).json({err: "Some error occurred"});
-                    }
-                    else{
-                        res.status(200).json({message: "Node added successfully"});
-                    }
-                })
-            }
-        })
-    }
+app.get('/api/group/list', (req, res) => {
+    groupController.getList(req, res, pool);
 })
 
-app.post('/api/add-group', (req, res) => {
-    console.log("Haha")
-    if (req.session.user != "admin") {
-        // console.log("Haha")
-        res.status(405).json({err: "Does not have admin access"})
-    }
-    else {
-        pool.query('insert into groups values ($1, $2)', [req.body.name, req.body.description], (err, result) => {
-            if (err) {
-                console.log(err)
-                res.status(500).json({err: "Some error occurred"})
-            }
-            else {
-                res.status(200).json({message: "Group inserted successfully"})
-            }
-        })
-    }
+app.post('/api/group/create', (req, res) => {
+    groupController.create(req, res, pool);
 })
 
-app.post('/api/add-user', (req, res) => {
-    if (req.session.user != 'admin') {
-        res.status(405).json({err: "Does not have admin access"})
-    }
-    else {
-        // console.log("Logged in")
-        // console.log(req.body.username)
-        // console.log(req.body)
-        pool.query('INSERT INTO users VALUES ($1, $2)', [req.body.username, req.body.password1], (err, result) => {
-            if (err) {
-                // console.log("haha")
-                console.log(err)
-                res.status(500).json({err: "Some error occurred"})
-            }
-            else{
-                temp = []
-                for (const l in req.body.groups){
-                    temp[l] = [req.body.username, req.body.groups[l]];
-                }
-                console.log(temp)
-                pool.query(format('INSERT INTO usergroup (username, group_name) VALUES %L', temp), (err, result) => {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).json({err: "Some error occurred"});
-                    }
-                    else{
-                        res.status(200).json({message: "Node added successfully"});
-                    }
-                })
-            }
-        })
-    }
+app.post('/api/group/delete', (req, res) => {
+    groupController.delete(req, res, pool);
 })
 
-app.post('/api/add-database', (req, res) => {
-    if (req.session.user != 'admin') {
-        res.status(405).json({err: "Does not have admin access"})
-    }
-    else {
-        pool.query('INSERT INTO databases VALUES ($1, $2, $3)', [uuid.v4(), req.body.node, req.body.name], (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500).json({err: "Some error occurred"});
-            }
-            else {
-                res.status(200).json({message: "Database added successfully"})
-            }
-        })
-    }
+app.get('/api/node/list', (req, res) => {
+    nodeController.getList(req, res, pool);
 })
 
-app.post('/api/get-dashboard-data', (req, res) => {
-    get_dashboard_data(req, res, pool, influx)
-    // queryApi.queryRows(anotherQuery, fluxObserver)
-});
+app.post('/api/node/create', (req, res) => {
+   nodeController.create(req, res, pool);
+})
 
-app.post('/api/alert/create', (req, res) => {
-    alertController.create(req, res, pool);
+app.post('/api/node/delete', (req, res) => {
+    nodeController.delete(req, res, pool);
+})
+
+
+app.get('/api/user/list', (req, res) => {
+    userController.getList(req, res, pool);
+})
+
+app.post('/api/node/create', (req, res) => {
+   userController.create(req, res, pool);
+})
+
+app.post('/api/node/delete', (req, res) => {
+    userController.delete(req, res, pool);
 })
 
 app.get('/api/alert/list', (req, res) => {
     alertController.getList(req, res, pool);
 })
 
+app.post('/api/alert/create', (req, res) => {
+    alertController.create(req, res, pool);
+})
+
+app.post('/api/alert/delete', (req, res) => {
+    alertController.delete(req, res, pool);
+})
+
+app.post('/api/get-dashboard-data', (req, res) => {
+    get_dashboard_data(req, res, pool, influx)
+});
+
 app.get('/api/alert/logs',(req, res) => {
     alertController.getLogs(req, res, pool);
+})
+
+app.post('/api/alert/acknowledge',(req, res) => {
+    alertController.acknowledge(req, res, pool);
 })
 
 var server = app.listen(8081, function () {

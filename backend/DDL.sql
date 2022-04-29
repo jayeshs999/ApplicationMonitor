@@ -24,7 +24,7 @@ CREATE TABLE Groups (
  
 CREATE TABLE Users (
    username varchar(20),
-   password varchar (20),
+   password varchar (100),
    Primary key (username)
 );
 
@@ -50,7 +50,7 @@ CREATE TABLE Databases (
     database_id varchar(40) NOT NULL,
     IP varchar(40),
     name varchar(20),
-    descriptoin varchar(500),
+    description varchar(500),
     Primary Key (database_id),
     Foreign Key (IP) references Node
 );
@@ -140,7 +140,7 @@ INSERT INTO NodeGroup VALUES ('1','Group1'),
 ('9','Group5'),
 ('10','Group5');
 
-INSERT INTO Users VALUES ('admin','admin_password'),
+INSERT INTO Users VALUES ('admin','$2b$10$LJURPGR6PDHTVa9eGKhBKeUFjaZlSQTvrKyT38K24m.c6ydUwsr16'),
 ('User1','User1_password'),
 ('User2','User2_password'),
 ('User3','User3_password'),
