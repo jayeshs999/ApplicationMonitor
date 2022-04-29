@@ -11,7 +11,7 @@ const get_groups = require("./controllers/get_groups")
 const get_nodes = require("./controllers/get_nodes");
 const get_dashboard_data = require("./controllers/get_dashboard_data")
 const { InfluxDB, Point } = require('@influxdata/influxdb-client')
-const alertController = require('./controllers/alerts')
+const alertController = require('./controllers/alert.controller')
 
 const url = process.env.INFLUX_URL || ''
 const token = process.env.INFLUX_TOKEN

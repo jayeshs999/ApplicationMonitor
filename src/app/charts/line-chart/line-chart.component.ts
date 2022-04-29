@@ -11,21 +11,36 @@ import { LineChartConfig } from './line-chart.config';
 export class LineChartComponent implements OnInit{
     private _chartSeries: any;
     private _additionalOptions : any;
+    private _chartMetaData : any;
     config : Partial<ChartOptions> = {};
     @ViewChild("chart", {static: false}) chart: ChartComponent;
 
     @Input() set chartSeries(value: any) {
-       this._chartSeries = value;
+      console.log(value)
+      this._chartSeries = value;
       this.chart.updateSeries(this._chartSeries, true);
     }
     
-    get chartSeries(): string {
+    get chartSeries(): any {
     
         return this._chartSeries;
     
-  }
+    }
+
+    @Input() set chartMetadata(value: any) {
+      console.log(value);
+      this._chartMetaData = value;
+    }
+    
+    get chartMetadata(): any {
+    
+        return this._chartMetaData;
+    
+    }
   constructor() { 
-    this.config = LineChartConfig();
+    console.log(this.chartSeries);
+    console.log(this.chartMetadata)
+    this.config = LineChartConfig(this.chartSeries, this.chartMetadata);
   }
 
   ngOnInit(): void {

@@ -96,7 +96,7 @@
                 <div nz-col [nzXXl]="12" [nzXl]="12" [nzLg]="12" [nzMd]="24" [nzSm]="24" [nzXs]="24"
                     *ngFor="let item of nodeCells">
                     <nz-list-item>
-                        <app-line-chart></app-line-chart>
+                        <app-line-chart [chartSeries]="item.data" [chartMetadata]="item"></app-line-chart>
                     </nz-list-item>
                 </div>
             </div>
@@ -192,7 +192,7 @@
                 <div nz-col [nzXXl]="12" [nzXl]="12" [nzLg]="12" [nzMd]="24" [nzSm]="24" [nzXs]="24"
                     *ngFor="let item of databaseCells">
                     <nz-list-item>
-                        <app-line-chart></app-line-chart>
+                        <app-line-chart [chartSeries]="item.data" [chartMetadata]="item"></app-line-chart>
                     </nz-list-item>
                 </div>
             </div>

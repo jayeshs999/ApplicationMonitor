@@ -25,7 +25,7 @@ function get_dashboard_data(req, res, pool, influx) {
     //     "blks_hits": '|> filter(fn: (r) => r["_measurement"] == "postgresql") |> filter(fn: (r) => r["_field"] == "blks_hit") '
     // }
 
-    let bucket_string = 'from(bucket: "Project") '
+    let bucket_string = `from(bucket: "${process.env.DATA_BUCKET_NAME}") `
 
     let timeperiod_string = `|> range(start: ${req.body.time_period}, stop: -0h) `
 
@@ -36,10 +36,10 @@ function get_dashboard_data(req, res, pool, influx) {
         for (const l in req.body.entities){
             // console.log(l)
             if (l != req.body.entities.length - 1){
-                user_string += (`r["host"] == ` + req.body.entities[l] + ` or `)
+                user_string += (`r["host"] == "` + req.body.entities[l] + `" or `)
             }
             else{
-                user_string += (`r["host"] == ` + req.body.entities[l] + ` `)
+                user_string += (`r["host"] == "` + req.body.entities[l] + `" ) `)
             }
         }
     }
@@ -49,10 +49,10 @@ function get_dashboard_data(req, res, pool, influx) {
         for (const l in req.body.entities){
             // console.log(l)
             if (l != req.body.entities.length - 1){
-                user_string += (`(r["db"] == ` + req.body.entities[l]["database"] + ' and ' + `r["host"] == ` + req.body.entities[l]["node"] + ')' + ` or `)
+                user_string += (`(r["db"] == "` + req.body.entities[l]["database"] + '" and ' + `r["host"] == "` + req.body.entities[l]["node"] + '")' + ` or `)
             }
             else{
-                user_string += (`(r["db"] == ` + req.body.entities[l]["database"] + ' and ' + `r["host"] == ` + req.body.entities[l]["node"] + ')' + ` `)
+                user_string += (`(r["db"] == "` + req.body.entities[l]["database"] + '" and ' + `r["host"] == "` + req.body.entities[l]["node"] + '")' + `) `)
             }
         }
     }
@@ -61,35 +61,35 @@ function get_dashboard_data(req, res, pool, influx) {
     let aggregate_string = `|> aggregateWindow(every: ${req.body.cell_data.window}, fn: ${req.body.cell_data.aggregateFunction}, createEmpty: false) |> yield(name: "${req.body.cell_data.aggregateFunction}")`
 
     const query = bucket_string + timeperiod_string + map[req.body.cell_data.metric] + user_string + aggregate_string;
-    
+    console.log(query)
 
     // console.log(query)
 
-    const query1 = 'from(bucket: "Project") \
+    const query1 = `from(bucket: "${process.env.DATA_BUCKET_NAME}") \
     |> range(start: -10h, stop: -0h) \
     |> filter(fn: (r) => r["_measurement"] == "cpu") \
     |> filter(fn: (r) => r["_field"] == "usage_system") \
     |> filter(fn: (r) => r["cpu"] == "cpu-total") \
     |> filter(fn: (r) => r["host"] == "Shreys-MacBook-Pro.local") \
     |> aggregateWindow(every: 1h, fn: mean, createEmpty: false) \
-    |> yield(name: "mean")'
+    |> yield(name: "mean")`
 
-    const query2 = 'from(bucket: "Project") \
+    const query2 = `from(bucket: "${process.env.DATA_BUCKET_NAME}") \
     |> range(start: -10h, stop: -0h) \
     |> filter(fn: (r) => r["_measurement"] == "mem") \
     |> filter(fn: (r) => r["_field"] == "used") \
     |> filter(fn: (r) => r["host"] == "Shreys-MacBook-Pro.local") \
     |> aggregateWindow(every: 1h, fn: mean, createEmpty: false) \
-    |> yield(name: "mean")'
+    |> yield(name: "mean")`
 
-    const query3 = 'from(bucket: "Project") \
+    const query3 = `from(bucket: "${process.env.DATA_BUCKET_NAME}") \
     |> range(start: -10h, stop: -0h) \
     |> filter(fn: (r) => r["_measurement"] == "postgresql") \
     |> filter(fn: (r) => r["_field"] == "blks_read") \
     |> filter(fn: (r) => r["db"] == "lab4db" or r["db"] == "lab2db") \
     |> filter(fn: (r) => r["host"] == "Shreys-MacBook-Pro.local") \
     |> aggregateWindow(every: 1h, fn: last, createEmpty: false) \
-    |> yield(name: "last")'
+    |> yield(name: "last")`
     
     new Promise((resolve, reject)=>{
         let output = {}
@@ -97,7 +97,7 @@ function get_dashboard_data(req, res, pool, influx) {
         // output.data = []
 
 
-        influx.queryRows(query3, {
+        influx.queryRows(query, {
             next(row, tableMeta) {
                 const o = tableMeta.toObject(row)
 

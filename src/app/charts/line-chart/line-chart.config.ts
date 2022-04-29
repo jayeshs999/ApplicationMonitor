@@ -1,13 +1,8 @@
 import { ChartOptions } from "src/app/chartoptions.type";
 
-export function LineChartConfig() {
+export function LineChartConfig(data, metadata) {
     let config : Partial<ChartOptions> =  {
-        series: [
-          {
-            name: "Desktops",
-            data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-          }
-        ],
+        series: undefined,
         chart: {
           height: 350,
           type: "line",
@@ -22,7 +17,7 @@ export function LineChartConfig() {
           curve: "straight"
         },
         title: {
-          text: "Product Trends by Month",
+          text: metadata.name,
           align: "left"
         },
         grid: {
@@ -32,17 +27,7 @@ export function LineChartConfig() {
           }
         },
         xaxis: {
-          categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep"
-          ]
+          type   : "datetime",
         },
         tooltip : {
             theme : 'dark',

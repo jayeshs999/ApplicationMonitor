@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS DatabaseAlert CASCADE;
 DROP TABLE IF EXISTS Sessions CASCADE;
 
 CREATE TABLE Node (
-   IP varchar(20),
+   IP varchar(40),
    Name varchar(20),
    Primary key (IP)
 );
@@ -29,7 +29,7 @@ CREATE TABLE Users (
 
  
 CREATE TABLE NodeGroup (
-   IP varchar(20),
+   IP varchar(40),
    group_name varchar(20),
    Primary key (IP, group_name),
    Foreign Key (IP) references Node,
@@ -46,14 +46,14 @@ CREATE TABLE UserGroup (
  
 CREATE TABLE Databases (
     database_id varchar(40) NOT NULL,
-    IP varchar(20),
+    IP varchar(40),
     name varchar(20),
     descriptoin varchar(500),
     Primary Key (database_id),
     Foreign Key (IP) references Node
 );
 
-CREATE TABLE Alert (
+CREATE TABLE Alerts (
     id varchar(64),
     username varchar(20),
     name varchar(200),
@@ -76,7 +76,8 @@ CREATE TABLE AlertLogs (
       id varchar(64),
       timest timestamp,
       ack int CHECK(ack in (0, 1)),
-      primary key(id, timest)
+      primary key(id, timest),
+      Foreign Key (id) references Alerts 
 );
 -- CREATE TABLE DatabaseAlert (
 --     AlertID int,

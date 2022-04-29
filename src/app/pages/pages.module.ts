@@ -33,6 +33,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
     NzInputModule,
     NzSelectModule,
     NzModalModule,
-    NzEmptyModule
+    NzEmptyModule,
+    NzTableModule,
   ]
 })
 export class PagesModule { }

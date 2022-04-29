@@ -117,6 +117,8 @@ export class DashboardViewComponent implements OnInit {
         'timestamps': undefined
       }
     }
+    console.log(this.nodeCells);
+    console.log(this.databaseCells)
   }
 
   refreshDashboard() {
@@ -132,8 +134,10 @@ export class DashboardViewComponent implements OnInit {
       }
       this.httpService.post(API.ServerURL + API.GetDashboardData, form).subscribe({
         next: (res: any) => {
-            this.nodeCells[i]['data'] = res['data'];
-            this.nodeCells[i]['timestamps'] = res['timestamps'];
+            console.log(res);
+            this.nodeCells[i]['data'] = res;
+            // this.nodeCells[i]['data'] = res['data'];
+            // this.nodeCells[i]['timestamps'] = res['timestamps'];
         }
       })
     }
@@ -150,8 +154,10 @@ export class DashboardViewComponent implements OnInit {
       }
       this.httpService.post(API.ServerURL + API.GetDashboardData, form).subscribe({
         next: (res: any) => {
-            this.databaseCells[i]['data'] = res['data'];
-            this.databaseCells[i]['timestamps'] = res['timestamps'];
+            console.log(res)
+            this.databaseCells[i]['data'] = res;
+            // this.databaseCells[i]['data'] = res['data'];
+            // this.databaseCells[i]['timestamps'] = res['timestamps'];
         }
       })
     }

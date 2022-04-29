@@ -1,6 +1,6 @@
 function logout(req, res, pool) {
 
-	pool.query("DELETE FROM Sessions WHERE SessionID=($1)", [req.sessionID], (err,res) => {
+	pool.query("DELETE FROM Sessions WHERE SessionID=($1)", [req.sessionID], (err,result) => {
         if (err) {
             console.log(err);
             res.status(500).send(err);
