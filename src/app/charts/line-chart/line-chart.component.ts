@@ -18,7 +18,9 @@ export class LineChartComponent implements OnInit{
     @Input() set chartSeries(value: any) {
       console.log(value)
       this._chartSeries = value;
-      this.chart.updateSeries(this._chartSeries, true);
+      console.log(value)
+      if(value.length != 0)
+        this.chart.updateSeries(this._chartSeries, true);
     }
     
     get chartSeries(): any {
@@ -38,12 +40,12 @@ export class LineChartComponent implements OnInit{
     
     }
   constructor() { 
-    console.log(this.chartSeries);
-    console.log(this.chartMetadata)
-    this.config = LineChartConfig(this.chartSeries, this.chartMetadata);
   }
 
   ngOnInit(): void {
+    console.log(this.chartSeries);
+    console.log(this.chartMetadata)
+    this.config = LineChartConfig(this.chartSeries, this.chartMetadata);
   }
 
 }

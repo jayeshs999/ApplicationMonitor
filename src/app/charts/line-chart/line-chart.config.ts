@@ -1,37 +1,48 @@
 import { ChartOptions } from "src/app/chartoptions.type";
 
-export function LineChartConfig(data, metadata) {
-    let config : Partial<ChartOptions> =  {
-        series: undefined,
+export function LineChartConfig(chartSeries: any, chartMetadata: any) {
+    let config: Partial<ChartOptions> = {
+        series: chartSeries,
         chart: {
-          height: 350,
-          type: "line",
-          zoom: {
-            enabled: false
-          }
+            height: 350,
+            type: "line",
+            zoom: {
+                enabled: false
+            }
         },
         dataLabels: {
-          enabled: false
+            enabled: false
         },
         stroke: {
-          curve: "straight"
+            curve: "straight"
         },
         title: {
-          text: metadata.name,
-          align: "left"
+            text: chartMetadata.name,
+            align: "left"
         },
         grid: {
-          row: {
-            colors: ["transparent"], // takes an array which will be repeated on columns
-            opacity: 0.5
-          }
+            row: {
+                colors: ["transparent"], // takes an array which will be repeated on columns
+                opacity: 0.5
+            }
         },
         xaxis: {
-          type   : "datetime",
+            labels: {
+                formatter: function (value) {
+                  return (new Date(value)).toString();
+                }
+              },
         },
-        tooltip : {
-            theme : 'dark',
+        yaxis: {
+            labels: {
+              formatter: function (value) {
+                return value.toFixed(2).toLocaleLowerCase();
+              }
+            },
+          },
+        tooltip: {
+            theme: 'dark',
         }
-      };
+    };
     return config
 }

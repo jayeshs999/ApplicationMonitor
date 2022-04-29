@@ -13,7 +13,19 @@ import { WindowPeriods } from './windowPeriods';
   styleUrls: ['./dashboard-view.component.scss']
 })
 export class DashboardViewComponent implements OnInit {
-  nodeCells: any = [];
+  nodeCells: any[] = [
+    {
+      'name': 'dd',
+      'metric': 'cpu',
+      'aggregateFunction': 'mean',
+      'window': {
+        'type': '1m',
+        'value': undefined,
+      },
+      'data': ([] as any[]),
+      'timestamps': undefined
+    }
+  ];
   databaseCells: any = [];
   nodesToTrack: any[] = []
   databasesToTrack: any[] = []
@@ -32,7 +44,7 @@ export class DashboardViewComponent implements OnInit {
       'type': '',
       'value': undefined,
     },
-    'data': undefined,
+    'data': ([] as any[]),
     'timestamps': undefined
   }
 
@@ -44,7 +56,7 @@ export class DashboardViewComponent implements OnInit {
       'type': '',
       'value': undefined,
     },
-    'data': undefined,
+    'data': ([] as any[]),
     'timestamps': undefined
   }
 
@@ -97,7 +109,7 @@ export class DashboardViewComponent implements OnInit {
           'type': '',
           'value': undefined,
         },
-        'data': undefined,
+        'data': ([] as any[]),
         'timestamps': undefined
       }
 
@@ -113,7 +125,7 @@ export class DashboardViewComponent implements OnInit {
           'type': '',
           'value': undefined,
         },
-        'data': undefined,
+        'data': ([] as any[]),
         'timestamps': undefined
       }
     }
@@ -123,7 +135,7 @@ export class DashboardViewComponent implements OnInit {
 
   refreshDashboard() {
     for (let i = 0; i < this.nodeCells.length; i++) {
-      let ele = this.nodeCells[i];
+      let ele = JSON.parse(JSON.stringify(this.nodeCells[i]));
       ele['window'] = ele['window']['type'] == 'custom' ? ele['window']['value'] : ele['window']['type']
 
       let form: any = {
@@ -143,7 +155,7 @@ export class DashboardViewComponent implements OnInit {
     }
     
     for (let i = 0; i < this.databaseCells.length; i++) {
-      let ele = this.databaseCells[i];
+      let ele = JSON.parse(JSON.stringify(this.databaseCells[i]));
       ele['window'] = ele['window']['type'] == 'custom' ? ele['window']['value'] : ele['window']['type']
 
       let form: any = {
