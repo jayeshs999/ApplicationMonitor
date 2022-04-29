@@ -69,6 +69,7 @@ app.use(function (req, res, next) {
     let sesid = req.sessionID;
     console.log(req.sessionID)
     pool.query('SELECT * FROM Sessions WHERE SessionID=($1)', [sesid], (error, results) => {
+        console.log(results)
         if (error || results.rowCount == 0) {
             return res.status(401).send("Unauthorized");
         }

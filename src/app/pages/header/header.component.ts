@@ -9,11 +9,13 @@ import { API } from 'src/app/API';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
+  user : string;
   constructor(private http: HttpClient, private router : Router) { }
 
   ngOnInit(): void {
-    
+    this.http.get(API.ServerURL + API.CheckLoginURL, {withCredentials:true}).subscribe({
+      next : (data:any)=>{this.user = data.user;console.log(this.user)}
+    })
   }
 
   logout() {

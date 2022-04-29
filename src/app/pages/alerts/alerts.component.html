@@ -110,11 +110,11 @@
     <div nz-row [nzGutter]="16">
         <div nz-col [nzXXl]="6" [nzXl]="6" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let item of alertList">
             <nz-list-item (click)="1+1">
-                <div class="card border-0" style="width: 18rem;" style="background-color: rgb(41,41,51);height: 15vh;">
+                <div class="card" [ngClass]="{'border-red' : item.priority == 0, 'border-yellow' : item.priority == 1, 'border-blue' : item.priority == 2, 'border-green' : item.priority == 3}" style="background-color: rgb(41,41,51);">
                     <div class="card-body">
                         <h5 class="card-title" style="color: rgb(21, 104, 246);">{{item.name}}</h5>
                         <h6 class="card-subtitle mb-2 text-muted" style="font-size: small;">{{item.description}}</h6>
-                        <p class="card-text text-muted" style="font-size: smaller;"> {{item.unacknowledged}} unacknowledged alerts</p>
+                        <p class="card-text" style="font-size: smaller;" [style.color]="item.unacknowledged == 0 ? 'green' : 'red'"> {{item.unacknowledged}} unacknowledged alerts</p>
                         <a class="card-link" (click)="openViewHistoryModal(item)"><i nz-icon nzType="eye" nzTheme="outline"></i></a>
                         <a class="card-link" (click)="openDeleteModal(item)"><i nz-icon nzType="delete" nzTheme="outline"></i></a>
                     </div>
@@ -140,7 +140,7 @@
       </thead>
       <tbody>
           <tr *ngFor="let data of virtualTable.data;let index=index">
-            <td>{{ data.timest }}</td>
+            <td>{{ data.timest | date:'medium' }}</td>
             <td>
                 <button nz-button *ngIf="data.ack == 0" nzType="primary" class="create-alert-button" (click)="acknowledgeAlert(data.timest, index)">
                     Acknowledge

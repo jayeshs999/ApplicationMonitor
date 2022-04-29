@@ -4,6 +4,7 @@ const { Pool } = require('pg');
 const tx = require('./utils/transaction');
 const metricsMap = require('./utils/metrics');
 const format = require('pg-format')
+const moment = require('moment')
 require('dotenv').config();
 
 const url = process.env.INFLUX_URL || ''
@@ -81,22 +82,22 @@ async function updateAlert(alert) {
         if (alert.threshold_type == "ABOVE") {
           if (o["_value"] > alert.threshold_low) {
             // console.log(o["_value"])
-            output.push([alert.id, o["_time"],0])
+            output.push([alert.id, moment(o["_time"]).format('YYYY-MM-DD HH:mm:ss.SS'),0])
           }
         }
         else if (alert.threshold_type == "BELOW") {
           if (o["_value"] < alert.threshold_low) {
-            output.push([alert.id, o["_time"],0])
+            output.push([alert.id, moment(o["_time"]).format('YYYY-MM-DD HH:mm:ss.SS'),0])
           }
         }
         else if (alert.threshold_type == "IN_RANGE") {
           if (o["_value"] > alert.threshold_low && o["_value"] < alert.threshold_high) {
-            output.push([alert.id, o["_time"],0])
+            output.push([alert.id, moment(o["_time"]).format('YYYY-MM-DD HH:mm:ss.SS'),0])
           }
         }
         else if (alert.threshold_type == "OUT_OF_RANGE") {
           if (o["_value"] < alert.threshold_low || o["_value"] > alert.threshold_high) {
-            output.push([alert.id, o["_time"],0])
+            output.push([alert.id, moment(o["_time"]).format('YYYY-MM-DD HH:mm:ss.SS'),0])
           }
         }
       },
@@ -123,15 +124,10 @@ async function updateAlert(alert) {
     // console.log("Updated alert logs")
     // res = await pool.query(format('UPDATE Alerts SET last_timestamp = $1 WHERE id = $2', [end_timestamp, alert.id]))
     // console.log("Updated alerts")
-
-    pool.query('SELECT * FROM nodes', (err, result) => {
-      if (err) {
-        console.log(err)
-      }
-      else{
-        console.log(result)
-      }
-    })
+    let query1 = format('INSERT INTO AlertLogs VALUES %L;', awaitRes);
+    let query2 = format('UPDATE Alerts SET last_timestamp = %L WHERE id = %L',moment(end_timestamp).format('YYYY-MM-DD HH:mm:ss.SS'), alert.id)
+    //console.log(`BEGIN;${query1};${query2};COMMIT;`)
+    let result = await pool.query(`BEGIN;${query1};${query2};COMMIT;`);
 
     // pool.query(format('INSERT INTO AlertLogs VALUES %L', awaitRes), (err, result) => {
     //   if (err) {

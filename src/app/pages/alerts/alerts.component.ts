@@ -35,19 +35,19 @@ export class AlertsComponent implements OnInit {
   PRIORITY = [
     {
       name : 'CRIT',
-      value : 0
+      value : 0,
     },
     {
       name : 'WARN',
-      value : 1
+      value : 1,
     },
     {
       name : 'INFO',
-      value : 2
+      value : 2,
     },
     {
       name : 'OK',
-      value : 3
+      value : 3,
     }
   ]
 
@@ -133,7 +133,7 @@ export class AlertsComponent implements OnInit {
     })
     .subscribe({
       next: (res: any) => {
-        this.currAlert.logs = res.logs;
+        this.currAlert.logs = res.logs.map((ele)=>{return {'timest' : new Date(ele.timest), 'ack' : ele.ack }});
         this.viewHistoryModalOpen = true;
       },
       error: (err: any) => {
@@ -142,12 +142,14 @@ export class AlertsComponent implements OnInit {
   }
   
   acknowledgeAlert(timest, index){
+    console.log(this.currAlert.id, timest)
     this.httpService.post(API.ServerURL + API.AcknowledgeAlert, {
       alert_id : this.currAlert.id,
-      timest : timest
+      timest : timest.toISOString()
     }).subscribe({ 
       next: (res:any) => {
         this.currAlert.logs[index].ack  = 1;
+        this.currAlert.unacknowledged -= 1;
         this.notification.success('Success',res.message);
 
       },

@@ -13,7 +13,7 @@ export class PagesComponent implements OnInit {
   links = [
     {
       name : 'Dashboard',
-      url : '/pages/dashboards',
+      url : '/pages/dashboard',
       icon : 'dashboard'
     },
     {
@@ -21,11 +21,6 @@ export class PagesComponent implements OnInit {
       url : '/pages/alerts',
       icon : 'bell'
     },
-    {
-      name : 'Visualize',
-      url : '/pages/visualize',
-      icon : 'area-chart'
-    }
   ]
   constructor(private httpService : HttpServiceService) { }
 

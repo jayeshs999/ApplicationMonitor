@@ -13,11 +13,7 @@ const routes: Routes = [
     children : [
       {
         path : '',
-        redirectTo : 'dashboards',
-      },
-      {
-        path : 'dashboards',
-        component : DashboardComponent,
+        redirectTo : 'dashboard',
       },
       {
         path : 'settings',
@@ -32,7 +28,7 @@ const routes: Routes = [
         redirectTo : 'dashboard',
       },
       {
-        path : 'dashboard/:id',
+        path : 'dashboard',
         component : DashboardViewComponent
       }
     ]
