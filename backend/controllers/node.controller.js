@@ -1,3 +1,5 @@
+const format = require('pg-format');
+
 function getNodes(req, res, pool) {
     // const query = "select ip, database_id from databases order by ip, database_id;";
     // console.log("Hahaha");

@@ -1,4 +1,5 @@
 const bcrpyt = require('bcrypt');
+const format = require('pg-format');
 
 function createUser(req, res, pool) {
     if (req.session.user != 'admin') {
