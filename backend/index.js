@@ -231,7 +231,7 @@ app.post('/api/add-database', (req, res) => {
 })
 
 app.post('/api/get-dashboard-data', (req, res) => {
-    get_dashboard_data(req, res, influx)
+    get_dashboard_data(req, res, pool, influx)
     // queryApi.queryRows(anotherQuery, fluxObserver)
 })
 
