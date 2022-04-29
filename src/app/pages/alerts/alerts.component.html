@@ -138,8 +138,7 @@
         </tr>
       </thead>
       <tbody>
-        <ng-template nz-virtual-scroll let-data let-index="index">
-          <tr>
+          <tr *ngFor="let data of virtualTable.data;let index=index">
             <td>{{ data.timest }}</td>
             <td>
                 <button nz-button *ngIf="data.ack == 0" nzType="primary" class="create-alert-button" (click)="acknowledgeAlert(data.timest, index)">
@@ -147,7 +146,6 @@
                 </button>
             </td>
           </tr>
-        </ng-template>
       </tbody>
     </nz-table>
     </ng-container>
