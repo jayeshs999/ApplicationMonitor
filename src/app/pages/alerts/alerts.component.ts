@@ -4,6 +4,7 @@ import { API } from 'src/app/API';
 import { HttpServiceService } from 'src/app/http-service.service';
 import { DatabaseMetrics } from '../dashboard/dashboard-view/databaseMetrics';
 import { NodeMetrics } from '../dashboard/dashboard-view/nodeMetrics';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-alerts',
@@ -11,6 +12,7 @@ import { NodeMetrics } from '../dashboard/dashboard-view/nodeMetrics';
   styleUrls: ['./alerts.component.scss']
 })
 export class AlertsComponent implements OnInit {
+  confirmDeleteModal?: NzModalRef;
 
   alertList = [
         {
@@ -70,7 +72,7 @@ export class AlertsComponent implements OnInit {
   listDatabases : any[] = []; 
 
 
-  constructor(private httpService : HttpServiceService, private notification : NzNotificationService) { }
+  constructor(private httpService : HttpServiceService, private notification : NzNotificationService, private modal: NzModalService) { }
 
   syncAlerts(){
     this.httpService.get(API.ServerURL + API.GetAlerts).subscribe({
@@ -153,6 +155,27 @@ export class AlertsComponent implements OnInit {
         this.notification.error('Error',err.error.err);
       }
     })
+  }
+
+  openDeleteModal(item){
+    this.confirmDeleteModal = this.modal.confirm({
+      nzTitle : 'Do you want to delete this alert?',
+      nzContent : '',
+      nzOnOk :  () =>{
+        this.httpService.post(API.ServerURL + API.DeleteAlert, {
+          alert_id : item.id
+        }).subscribe({ 
+          next: (res:any) => {
+            this.notification.success('Success',res.message);
+            this.syncAlerts();
+          },
+          error: (err) => {
+            this.notification.error('Error',err.error.err);
+          }
+        })
+      }
+    }
+    )
   }
 
 }

@@ -1,5 +1,5 @@
 <nz-tabset>
-  <nz-tab nzTitle="Add node">
+  <nz-tab nzTitle="Nodes">
     <form nz-form class="login-form">
       <nz-form-item>
         <label for="IP">IP:</label>
@@ -17,8 +17,26 @@
       </nz-form-item>
       <button nz-button class="login-form-button login-form-margin" (click)="addNode()">Add</button>
     </form>
+
+    <nz-table #nodeTable [nzData]="nodeData">
+      <thead>
+        <tr>
+          <th>IP</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of nodeTable.data">
+          <td>{{data.ip}}</td>
+          <td>{{data.name}}</td>
+          <td>
+            <a (click)="deleteNode(data.ip)"><i nz-icon nzType="delete" nzTheme="outline"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
   </nz-tab>
-  <nz-tab nzTitle="Add group">
+  <nz-tab nzTitle="Group">
     <form nzForm [formGroup]="groupForm" class="login-form">
       <nz-form-label nzFor="Name">Name</nz-form-label>
       <input class="inp" id="Name" type="text" formControlName="name">
@@ -26,8 +44,25 @@
       <input class="inp" id="Description" type="text" formControlName="description">
       <button nz-button class="login-form-button login-form-margin" (click)="addGroup()">Add</button>
     </form>
+    <nz-table #groupTable [nzData]="groupData">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of groupTable.data">
+          <td>{{data.name}}</td>
+          <td>{{data.description}}</td>
+          <td>
+            <a (click)="deleteGroup(data.name)"><i nz-icon nzType="delete" nzTheme="outline"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
   </nz-tab>
-  <nz-tab nzTitle="Register user">
+  <nz-tab nzTitle="Users">
     <form class="login-form">
       <nz-form-item>
         <label for="Username">Username:</label>
@@ -50,8 +85,23 @@
       </nz-form-item>
       <button nz-button class="login-form-button login-form-margin" (click)="addUser()">Register</button>
     </form>
+    <nz-table #userTable [nzData]="userData">
+      <thead>
+        <tr>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of userTable.data">
+          <td>{{data.username}}</td>
+          <td>
+            <a (click)="deleteUser(data.username)"><i nz-icon nzType="delete" nzTheme="outline"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
   </nz-tab>
-  <nz-tab nzTitle="Add Database">
+  <nz-tab nzTitle="Database">
     <form nz-form class="login-form">
       <nz-form-item>
         <label for="Name">Name:</label>
@@ -69,5 +119,24 @@
       </nz-form-item>
       <button nz-button class="login-form-button login-form-margin" (click)="addDatabase()">Add</button>
     </form>
+    <nz-table #databaseTable [nzData]="databaseData">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>IP of server node</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of databaseTable.data">
+          <td>{{data.name}}</td>
+          <td>{{data.ip}}</td>
+          <td>{{data.description}}</td>
+          <td>
+            <a (click)="deleteDatabase(data.database_id)"><i nz-icon nzType="delete" nzTheme="outline"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
   </nz-tab>
 </nz-tabset>

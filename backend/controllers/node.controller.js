@@ -5,12 +5,12 @@ function getNodes(req, res, pool) {
     // console.log("Hahaha");
     if (req.session.user == "admin") {
 
-        pool.query('select ip from node', (err, result) => {
+        pool.query('select * from node', (err, result) => {
             res.json({ data: result.rows })
         })
     }
     else {
-        pool.query('select distinct ip from UserGroup, NodeGroup where UserGroup.group_name = NodeGroup.group_name AND userGroup.username = ($1)', [req.session.user], (err, result) => {
+        pool.query('select * from node where ip in (select distinct ip from UserGroup, NodeGroup where UserGroup.group_name = NodeGroup.group_name AND userGroup.username = ($1))', [req.session.user], (err, result) => {
             res.json({ data: result.rows })
         });
     }
@@ -47,7 +47,7 @@ function createNode(req, res, pool) {
     }
 }
 
-function deleteNode() {
+function deleteNode(req,res,pool) {
     if (req.session.user != "admin") {
         res.status(405).json({ err: "Does not have admin access" })
     }

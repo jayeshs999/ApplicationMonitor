@@ -34,16 +34,16 @@ CREATE TABLE NodeGroup (
    IP varchar(40),
    group_name varchar(20),
    Primary key (IP, group_name),
-   Foreign Key (IP) references Node,
-   Foreign Key (group_name) references Groups
+   Foreign Key (IP) references Node on delete cascade,
+   Foreign Key (group_name) references Groups on delete cascade
 );
  
 CREATE TABLE UserGroup (
    username varchar(20),
    group_name varchar(20),
    Primary key (username, group_name),
-   Foreign Key (username) references Users,
-   Foreign Key (group_name) references Groups
+   Foreign Key (username) references Users on delete cascade,
+   Foreign Key (group_name) references Groups on delete cascade
 );
  
 CREATE TABLE Databases (
@@ -52,7 +52,7 @@ CREATE TABLE Databases (
     name varchar(20),
     description varchar(500),
     Primary Key (database_id),
-    Foreign Key (IP) references Node
+    Foreign Key (IP) references Node on delete cascade
 );
 
 CREATE TABLE Alerts (
@@ -70,7 +70,7 @@ CREATE TABLE Alerts (
     message varchar(500),
     last_timestamp timestamp,
     Primary Key (id),
-    Foreign Key (username) references Users
+    Foreign Key (username) references Users on delete cascade
 );
  
 
@@ -79,7 +79,7 @@ CREATE TABLE AlertLogs (
       timest timestamp,
       ack int CHECK(ack in (0, 1)),
       primary key(id, timest),
-      Foreign Key (id) references Alerts 
+      Foreign Key (id) references Alerts on delete cascade
 );
 -- CREATE TABLE DatabaseAlert (
 --     AlertID int,
@@ -99,7 +99,7 @@ CREATE TABLE Sessions (
     username varchar(20),
     login_time TIMESTAMP,
     Primary Key (SessionID),
-    Foreign Key (username) references Users
+    Foreign Key (username) references Users on delete cascade
 );
  
 INSERT INTO Node VALUES ('1','Node1'),

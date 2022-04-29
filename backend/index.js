@@ -131,11 +131,11 @@ app.get('/api/user/list', (req, res) => {
     userController.getList(req, res, pool);
 })
 
-app.post('/api/node/create', (req, res) => {
+app.post('/api/user/create', (req, res) => {
    userController.create(req, res, pool);
 })
 
-app.post('/api/node/delete', (req, res) => {
+app.post('/api/user/delete', (req, res) => {
     userController.delete(req, res, pool);
 })
 

@@ -7,6 +7,8 @@ import { API } from 'src/app/API';
 import { HttpServiceService } from 'src/app/http-service.service';
 // import { NzFormModule } from 'ng-zorro-antd/form';
 // import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'app-settings',
@@ -14,6 +16,7 @@ import { HttpServiceService } from 'src/app/http-service.service';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
+  confirmDeleteModal?: NzModalRef;
 
   nodeForm = {
     ip: '',
@@ -40,7 +43,13 @@ export class SettingsComponent implements OnInit {
     node: '',
     description: ''
   }
-  constructor(private httpService: HttpServiceService, private router: Router) { }
+
+  nodeData : any[] = [];
+  groupData : any[] = [];
+  databaseData : any[] = [];
+  userData : any[] = [];
+
+  constructor(private httpService: HttpServiceService, private router: Router, private modal: NzModalService,  private notification : NzNotificationService) { }
 
   ngOnInit(): void {
     this.httpService.getOrRedirectToLogin(API.ServerURL + API.CheckLoginURL).subscribe({
@@ -58,6 +67,11 @@ export class SettingsComponent implements OnInit {
               this.listNodes = res.data.map((ele)=>ele.ip);
             }
           })
+
+          this.syncDatabase();
+          this.syncGroup();
+          this.syncNode();
+          this.syncUser();
         }
         else 
           this.router.navigate(['/pages']);
@@ -81,5 +95,120 @@ export class SettingsComponent implements OnInit {
   addDatabase() {
     this.httpService.postAndNotify(API.ServerURL + API.AddDatabase, this.databaseForm);
   }
+
+  syncNode(){
+    this.httpService.get(API.ServerURL + API.GetNodes).subscribe({
+      next: (res: any) => {
+        this.nodeData = res.data;
+      }
+    })
+  }
+
+  syncGroup(){
+    this.httpService.get(API.ServerURL + API.GetGroups).subscribe({
+      next: (res: any) => {
+        this.groupData = res.data;
+      }
+    });
+  }
+
+  syncDatabase(){
+    this.httpService.get(API.ServerURL + API.GetNodesAndDatabases).subscribe({
+      next: (res : any) => {
+        this.databaseData = res.data;
+      }
+    });
+  }
+
+  syncUser(){
+    this.httpService.get(API.ServerURL + API.GetUsers).subscribe({
+      next: (res : any) => {
+        console.log(res.data)
+        this.userData = res.data;
+      }
+    });
+  }
+
+  deleteNode(ip){
+    this.confirmDeleteModal = this.modal.confirm({
+      nzTitle : 'Do you want to delete this node?',
+      nzContent : '',
+      nzOnOk :  () =>{
+        this.httpService.post(API.ServerURL + API.DeleteNode, {
+          ip : ip
+        }).subscribe({ 
+          next: (res:any) => {
+            this.notification.success('Success',res.message);
+            this.syncNode();
+          },
+          error: (err) => {
+            this.notification.error('Error',err.error.err);
+          }
+        })
+      }
+    }
+    )
+  }
+
+  deleteUser(username){
+    this.confirmDeleteModal = this.modal.confirm({
+      nzTitle : 'Do you want to delete this user?',
+      nzContent : '',
+      nzOnOk :  () =>{
+        this.httpService.post(API.ServerURL + API.DeleteUser, {
+          username : username
+        }).subscribe({ 
+          next: (res:any) => {
+            this.notification.success('Success',res.message);
+            this.syncUser();
+          },
+          error: (err) => {
+            this.notification.error('Error',err.error.err);
+          }
+        })
+      }
+    })
+  }
+
+  deleteGroup(name){
+    this.confirmDeleteModal = this.modal.confirm({
+      nzTitle : 'Do you want to delete this group?',
+      nzContent : '',
+      nzOnOk :  () =>{
+        this.httpService.post(API.ServerURL + API.DeleteGroup, {
+          name : name
+        }).subscribe({ 
+          next: (res:any) => {
+            this.notification.success('Success',res.message);
+            this.syncGroup();
+          },
+          error: (err) => {
+            this.notification.error('Error',err.error.err);
+          }
+        })
+      }
+    })
+  }
+
+  deleteDatabase(database_id){
+    this.confirmDeleteModal = this.modal.confirm({
+      nzTitle : 'Do you want to delete this database?',
+      nzContent : '',
+      nzOnOk :  () =>{
+        this.httpService.post(API.ServerURL + API.DeleteDatabase, {
+          database_id : database_id
+        }).subscribe({ 
+          next: (res:any) => {
+            this.notification.success('Success',res.message);
+            this.syncDatabase();
+          },
+          error: (err) => {
+            this.notification.error('Error',err.error.err);
+          }
+        })
+      }
+    })
+  }
+
 
 }

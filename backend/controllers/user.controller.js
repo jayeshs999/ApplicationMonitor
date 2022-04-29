@@ -43,7 +43,7 @@ function getUsers(req, res, pool) {
                 res.status(500).json({err: "Some error occurred"})
             }
             else {
-                res.status(200).json({users: result.rows})
+                res.status(200).json({data: result.rows})
             }
         })
     }
