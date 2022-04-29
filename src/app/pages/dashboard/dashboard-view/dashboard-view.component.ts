@@ -14,17 +14,6 @@ import { WindowPeriods } from './windowPeriods';
 })
 export class DashboardViewComponent implements OnInit {
   nodeCells: any[] = [
-    {
-      'name': 'dd',
-      'metric': 'cpu',
-      'aggregateFunction': 'mean',
-      'window': {
-        'type': '1m',
-        'value': undefined,
-      },
-      'data': ([] as any[]),
-      'timestamps': undefined
-    }
   ];
   databaseCells: any = [];
   nodesToTrack: any[] = []

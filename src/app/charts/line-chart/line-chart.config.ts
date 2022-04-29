@@ -38,8 +38,10 @@ export function LineChartConfig(chartSeries: any, chartMetadata: any) {
         tooltip: {
             theme: 'dark',
             x: {
-                formatter: function(value) {
-                  return (new Date(value)).toLocaleString();
+                formatter: function(value,val) {
+                    console.log(value);
+                    console.log(val);
+                  return (new Date(val.w.config.series[val.seriesIndex].data[val.dataPointIndex].x)).toLocaleString();
                 }
               }
         }
