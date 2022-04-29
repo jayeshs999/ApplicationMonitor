@@ -32,7 +32,7 @@ export class AlertsComponent implements OnInit {
 
   PRIORITY = [
     {
-      name : '  CRIT',
+      name : 'CRIT',
       value : 0
     },
     {

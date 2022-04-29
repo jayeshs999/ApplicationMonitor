@@ -38,7 +38,7 @@
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
-            <nz-form-item *ngIf="newAlert.entity == 'Node'">
+            <nz-form-item *ngIf="newAlert.entity == 'node'">
                 <nz-form-label [nzSpan]="6" nzFor="nodeChoose">Nodes</nz-form-label>
                 <nz-form-control [nzSpan]="14">
                     <nz-select name="nodeChoose" [(ngModel)]="newAlert.entity_ids" nzSize="large" nzMode="multiple"
@@ -47,14 +47,14 @@
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
-            <nz-form-item *ngIf="newAlert.entity == 'Database'">
+            <nz-form-item *ngIf="newAlert.entity == 'database'">
                 <nz-form-label [nzSpan]="6" nzFor="type">Databases</nz-form-label>
                 <nz-form-control [nzSpan]="14">
                     <nz-select name="databaseChoose" [(ngModel)]="newAlert.entity_ids" nzSize="large" nzMode="multiple"
                         nzPlaceHolder="Please select the databases">
                         <nz-option-group *ngFor="let optionGroup of listDatabases" [nzLabel]="optionGroup.node">
                             <nz-option *ngFor="let option of optionGroup.databases"
-                                [nzValue]="option.database_id"
+                                [nzValue]="{'node': optionGroup.node, 'database': option.name}"
                                 [nzLabel]="option.name">
                             </nz-option>
                         </nz-option-group>
