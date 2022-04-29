@@ -217,7 +217,7 @@ app.post('/api/add-database', (req, res) => {
         res.status(405).json({err: "Does not have admin access"})
     }
     else {
-        pool.query('INSERT INTO databases VALUES ($2, $3)', [req.body.node, req.body.name], (err, result) => {
+        pool.query('INSERT INTO databases VALUES ($1, $2, $3)', [uuid.v4(), req.body.node, req.body.name], (err, result) => {
             if (err) {
                 console.log(err);
                 res.status(500).json({err: "Some error occurred"});

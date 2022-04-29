@@ -18,7 +18,7 @@ const fluxObserver = {
 
 
 function get_dashboard_data(req, res, pool, influx) {
-    // console.log(req.body)
+    console.log(req.body)
     // const map = {
     //     "cpu": '|> filter(fn: (r) => r["_measurement"] == "cpu") |> filter(fn: (r) => r["_field"] == "usage_system") |> filter(fn: (r) => r["cpu"] == "cpu-total") ',
     //     "mem": '|> filter(fn: (r) => r["_measurement"] == "mem") |> filter(fn: (r) => r["_field"] == "used") ',
