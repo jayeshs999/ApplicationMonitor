@@ -118,24 +118,38 @@ async function updateAlert(alert) {
     return 0
   }
   else{
-    console.log("Ima heere")
-    pool.query(format('INSERT INTO AlertLogs VALUES %L', awaitRes), (err, result) => {
+    // console.log("Ima heere")
+    // let res = await pool.query(format('INSERT INTO AlertLogs VALUES %L', awaitRes))
+    // console.log("Updated alert logs")
+    // res = await pool.query(format('UPDATE Alerts SET last_timestamp = $1 WHERE id = $2', [end_timestamp, alert.id]))
+    // console.log("Updated alerts")
+
+    pool.query('SELECT * FROM nodes', (err, result) => {
       if (err) {
-          console.log(err);
+        console.log(err)
       }
       else{
-          console.log("Updated alert logs")
+        console.log(result)
       }
     })
 
-    pool.query(format('UPDATE Alerts SET last_timestamp = $1 WHERE id = $2', [end_timestamp, alert.id]), (err, result) => {
-      if (err) {
-          console.log(err);
-      }
-      else{
-          console.log("Updated alerts")
-      }
-    })
+    // pool.query(format('INSERT INTO AlertLogs VALUES %L', awaitRes), (err, result) => {
+    //   if (err) {
+    //       console.log(err);
+    //   }
+    //   else{
+    //       console.log("Updated alert logs")
+    //   }
+    // })
+    // // console.log("Ima halfway done")
+    // pool.query(format('UPDATE Alerts SET last_timestamp = $1 WHERE id = $2', [end_timestamp, alert.id]), (err, result) => {
+    //   if (err) {
+    //       console.log(err);
+    //   }
+    //   else{
+    //       console.log("Updated alerts")
+    //   }
+    // })
   }
 
 }
