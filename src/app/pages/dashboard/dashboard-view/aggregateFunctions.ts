@@ -3,7 +3,6 @@ export const AggregateFunctions : any[] = [
     'last',
     'max',
     'min',
-    'avg',
     'mean',
     'count',
     'distinct',

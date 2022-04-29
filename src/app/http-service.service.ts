@@ -19,13 +19,15 @@ export class HttpServiceService {
     return this.http.post(url,body,Object.assign({},options,{withCredentials : true}));
   }
 
-  postAndNotify(url,body,options = {}){
+  postAndNotify(url,body,options = {}, success_callback = (res)=>{}, failure_callback = (err)=>{}){
     return this.http.post(url,body,Object.assign({},options,{withCredentials : true})).subscribe({
       next: (res:any) => {
         this.notification.success('Success',res.message);
+        success_callback(res);
       },
       error: (err) => {
         this.notification.error('Error',err.error.err);
+        failure_callback(err);
       }
     });
   }

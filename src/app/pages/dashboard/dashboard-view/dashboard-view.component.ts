@@ -69,32 +69,32 @@ export class DashboardViewComponent implements OnInit {
   constructor(private httpService: HttpServiceService) { }
 
   ngOnInit(): void {
-    this.httpService.getOrRedirectToLogin(API.ServerURL + API.GetNodesAndDatabases).subscribe({
-      next: (res: any) => {
-        this.listDatabases = [];
-        let temp = {};
-        res.data.forEach((ele) => {
-          if (temp.hasOwnProperty(ele.ip)) {
-            temp[ele.ip].push({ 'database_id': ele.database_id, 'name': ele.name });
-          }
-          else {
-            temp[ele.ip] = [{ 'database_id': ele.database_id, 'name': ele.name }];
-          }
-        });
+  this.httpService.getOrRedirectToLogin(API.ServerURL + API.GetNodesAndDatabases).subscribe({
+    next: (res: any) => {
+      this.listDatabases = [];
+      let temp = {};
+      res.data.forEach((ele) => {
+        if (temp.hasOwnProperty(ele.ip)) {
+          temp[ele.ip].push({ 'database_id': ele.database_id, 'name': ele.name });
+        }
+        else {
+          temp[ele.ip] = [{ 'database_id': ele.database_id, 'name': ele.name }];
+        }
+      });
 
-        for (let key in temp) {
-          if (temp.hasOwnProperty(key)) {
-            this.listDatabases.push({ 'node': key, 'databases': temp[key] });
-          }
+      for (let key in temp) {
+        if (temp.hasOwnProperty(key)) {
+          this.listDatabases.push({ 'node': key, 'databases': temp[key] });
         }
       }
-    })
+    }
+  })
 
-    this.httpService.getOrRedirectToLogin(API.ServerURL + API.GetNodes).subscribe({
-      next: (res: any) => {
-        this.listNodes = res.data;
-      }
-    })
+  this.httpService.getOrRedirectToLogin(API.ServerURL + API.GetNodes).subscribe({
+    next: (res: any) => {
+      this.listNodes = res.data;
+    }
+  })
   }
 
   handleCreateCell(type: string) {

@@ -17,29 +17,29 @@
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzFor="desc">Description</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                    <input nz-input name="name" type="name" id="desc" [(ngModel)]="newAlert.description">
+                    <input nz-input name="desc" type="desc" id="desc" [(ngModel)]="newAlert.description">
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzFor="type">Entity</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                    <nz-select nzPlaceHolder="Select a type" name="type" [(ngModel)]="newAlert.entity">
-                        <nz-option *ngFor="let item of ['Node','Database']" [nzLabel]="item" [nzValue]="item">
+                    <nz-select nzPlaceHolder="Select a type" name="type" [(ngModel)]="newAlert.entity" (ngModelChange)="newAlert.metric = undefined">
+                        <nz-option *ngFor="let item of ENTITY" [nzLabel]="item" [nzValue]="item">
                         </nz-option>
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item *ngIf="newAlert.entity">
-                <nz-form-label [nzSpan]="6" nzFor="type">Metric</nz-form-label>
+                <nz-form-label [nzSpan]="6" nzFor="metric">Metric</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                    <nz-select nzPlaceHolder="Select a metric" name="type" [(ngModel)]="newAlert.metric">
-                        <nz-option *ngFor="let item of newAlert.entity == 'Node' ? nodeMetrics : databaseMetrics"
+                    <nz-select nzPlaceHolder="Select a metric" name="metric" [(ngModel)]="newAlert.metric">
+                        <nz-option *ngFor="let item of newAlert.entity == 'node' ? nodeMetrics : databaseMetrics"
                             [nzLabel]="item" [nzValue]="item"></nz-option>
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item *ngIf="newAlert.entity == 'Node'">
-                <nz-form-label [nzSpan]="6" nzFor="type">Nodes</nz-form-label>
+                <nz-form-label [nzSpan]="6" nzFor="nodeChoose">Nodes</nz-form-label>
                 <nz-form-control [nzSpan]="14">
                     <nz-select name="nodeChoose" [(ngModel)]="newAlert.entity_ids" nzSize="large" nzMode="multiple"
                         nzPlaceHolder="Please select the nodes" name="Node">
@@ -62,9 +62,9 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6" nzFor="type">Threshold Type</nz-form-label>
+                <nz-form-label [nzSpan]="6" nzFor="threshold_type">Threshold Type</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                    <nz-select nzPlaceHolder="Select a threshold type" name="type"
+                    <nz-select nzPlaceHolder="Select a threshold type" name="threshold_type"
                         [(ngModel)]="newAlert.threshold_type">
                         <nz-option *ngFor="let item of ['ABOVE','BELOW','IN_RANGE','OUT_OF_RANGE']" [nzLabel]="item"
                             [nzValue]="item"></nz-option>
@@ -72,24 +72,24 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item *ngIf="['ABOVE','BELOW'].includes(newAlert.threshold_type)">
-                <nz-form-label [nzSpan]="6" nzFor="type">Threshold</nz-form-label>
+                <nz-form-label [nzSpan]="6" nzFor="threshold">Threshold</nz-form-label>
                     <nz-form-control [nzSpan]="14">
-                        <input nz-input name="name" type="number" id="type" [(ngModel)]="newAlert.threshold_1">
+                        <input nz-input name="threshold" type="number" id="threshold" [(ngModel)]="newAlert.threshold_1">
                     </nz-form-control>
             </nz-form-item>
             <nz-form-item *ngIf="['IN_RANGE','OUT_OF_RANGE'].includes(newAlert.threshold_type)">
-                <nz-form-label [nzSpan]="6" nzFor="type">Between</nz-form-label>
+                <nz-form-label [nzSpan]="6" nzFor="threshold12">Between</nz-form-label>
                     <nz-form-control [nzSpan]="7">
-                        <input nz-input name="name" type="number" id="type" [(ngModel)]="newAlert.threshold_1">
+                        <input nz-input name="threshold1" type="number" id="threshold2" [(ngModel)]="newAlert.threshold_1">
                     </nz-form-control>
                     <nz-form-control [nzSpan]="7">
-                        <input nz-input name="name" type="number" id="type" [(ngModel)]="newAlert.threshold_2">
+                        <input nz-input name="threshold2" type="number" id="threshold2" [(ngModel)]="newAlert.threshold_2">
                     </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6" nzFor="type">Priority</nz-form-label>
+                <nz-form-label [nzSpan]="6" nzFor="priority">Priority</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                    <nz-select nzPlaceHolder="Select an alert type" name="type"
+                    <nz-select nzPlaceHolder="Select an alert type" name="priority"
                         [(ngModel)]="newAlert.alert_priority">
                         <nz-option *ngFor="let item of PRIORITY" [nzLabel]="item.name"
                             [nzValue]="item.value"></nz-option>
@@ -99,7 +99,7 @@
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzFor="alert_message">Alert message</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                    <input nz-input name="name" type="name" id="alert_message" [(ngModel)]="newAlert.alert_message">
+                    <input nz-input name="alert_message" type="name" id="alert_message" [(ngModel)]="newAlert.alert_message">
                 </nz-form-control>
             </nz-form-item>
         </form>
@@ -123,14 +123,13 @@
     </div>
 </nz-list>
 
-<nz-modal [(nzVisible)]="viewHistoryModalOpen" nzTitle="{{currAlert.name}}" (nzOnCancel)="viewHistoryModalOpen = false" (nzOnOk)="viewHistoryModalOpen = false">
+<nz-modal [(nzVisible)]="viewHistoryModalOpen" nzTitle="{{currAlert.name}}" [nzFooter]="modalFooter">
     <ng-container *nzModalContent>
         <nz-table
       #virtualTable
       [nzData]="currAlert.logs"
       [nzFrontPagination]="false"
       [nzShowPagination]="false"
-      [nzScroll]="{ x: '1200px', y: '240px' }"
     >
       <thead>
         <tr>
@@ -152,4 +151,7 @@
       </tbody>
     </nz-table>
     </ng-container>
+    <ng-template #modalFooter>
+        <button nz-button nzType="primary" class="create-alert-button" (click)="viewHistoryModalOpen = false">Close</button>
+      </ng-template>
 </nz-modal>

@@ -3,7 +3,7 @@ const uuid = require('uuid');
 function createAlert(req,res,pool){
     let entity = req.body.entity;
 
-    if (entity != "node" || entity != "database"){
+    if (entity != "node" && entity != "database"){
         res.status(400).json({err: "Entity must be node or database"});
         return;
     }
@@ -11,7 +11,7 @@ function createAlert(req,res,pool){
     let entity_ids = JSON.stringify(req.body.entity_ids);
     console.log(req.body);
 
-    pool.query('INSERT INTO alerts VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)', [uuid.v4(), req.body.name, req.body.description, req.body.entity, req.body.metric, entity_ids, req.body.threshold_1, req.body.threshold_2, req.body.threshold_type, req.body.priority, req.body.message, new Date()], (err, result) => {
+    pool.query('INSERT INTO alerts VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)', [uuid.v4(), req.session.user, req.body.name, req.body.description, req.body.entity, req.body.metric, entity_ids, req.body.threshold_1, req.body.threshold_2, req.body.threshold_type, req.body.priority, req.body.message, new Date()], (err, result) => {
         if (err) {
             console.log(err);
             res.status(500).json({err: "Some error occurred"});

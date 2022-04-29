@@ -27,21 +27,21 @@ export function LineChartConfig(chartSeries: any, chartMetadata: any) {
             }
         },
         xaxis: {
-            labels: {
-                formatter: function (value) {
-                  return (new Date(value)).toString();
-                }
-              },
         },
         yaxis: {
             labels: {
               formatter: function (value) {
-                return value.toFixed(2).toLocaleLowerCase();
+                return value.toFixed(2).toString();
               }
             },
           },
         tooltip: {
             theme: 'dark',
+            x: {
+                formatter: function(value) {
+                  return (new Date(value)).toLocaleString();
+                }
+              }
         }
     };
     return config

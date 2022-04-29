@@ -49,6 +49,8 @@ export class AlertsComponent implements OnInit {
     }
   ]
 
+  ENTITY = ['node','database']
+
   newAlert : any = {
     name : '',
     description : '',
@@ -70,18 +72,45 @@ export class AlertsComponent implements OnInit {
 
   constructor(private httpService : HttpServiceService, private notification : NzNotificationService) { }
 
-  ngOnInit(): void {
-    this.httpService.getOrRedirectToLogin(API.ServerURL + API.GetAlerts).subscribe({
+  syncAlerts(){
+    this.httpService.get(API.ServerURL + API.GetAlerts).subscribe({
       next: (res: any) => {
         this.alertList = res.alerts;
       }
     });
+  }
+
+  ngOnInit(): void {
+    
+
+    this.httpService.getOrRedirectToLogin(API.ServerURL + API.GetNodesAndDatabases).subscribe({
+      next: (res: any) => {
+        this.listDatabases = [];
+        let temp = {};
+        res.data.forEach((ele) => {
+          if (temp.hasOwnProperty(ele.ip)) {
+            temp[ele.ip].push({ 'database_id': ele.database_id, 'name': ele.name });
+          }
+          else {
+            temp[ele.ip] = [{ 'database_id': ele.database_id, 'name': ele.name }];
+          }
+        });
+
+        for (let key in temp) {
+          if (temp.hasOwnProperty(key)) {
+            this.listDatabases.push({ 'node': key, 'databases': temp[key] });
+          }
+        }
+      }
+    })
 
     this.httpService.getOrRedirectToLogin(API.ServerURL + API.GetNodes).subscribe({
       next: (res: any) => {
         this.listNodes = res.data;
       }
-    });
+    })
+
+    this.syncAlerts()
   }
 
   handleCancel(){
@@ -89,7 +118,7 @@ export class AlertsComponent implements OnInit {
   }
 
   handleOk(){
-    this.httpService.postAndNotify(API.ServerURL + API.CreateAlert, this.newAlert)
+    this.httpService.postAndNotify(API.ServerURL + API.CreateAlert, this.newAlert, {},(res)=>{this.syncAlerts()})
     this.createModalOpen = false;
   }
 
