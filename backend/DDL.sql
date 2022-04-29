@@ -48,36 +48,49 @@ CREATE TABLE Databases (
     database_id varchar(40) NOT NULL,
     IP varchar(20),
     name varchar(20),
+    descriptoin varchar(500),
     Primary Key (database_id),
     Foreign Key (IP) references Node
 );
 
-CREATE TABLE NodeAlert (
-    AlertID int,
+CREATE TABLE Alert (
+    id varchar(64),
     username varchar(20),
-    priority int CHECK(priority < 4),
-    query varchar(500),
+    name varchar(200),
+    description varchar(500),
+    entity varchar(20) check(entity in ('node', 'database')),
+    metric varchar(500),
+    entity_ids varchar(1024),
     threshold_low float NOT NULL,
     threshold_high float,
-    type varchar(20) check(type in ('ABOVE', 'BELOW', 'IN_RANGE', 'OUT_OF_RANGE')),
+    threshold_type varchar(20) check(threshold_type in ('ABOVE', 'BELOW', 'IN_RANGE', 'OUT_OF_RANGE')),
+    priority int CHECK(priority < 4),
     message varchar(500),
-    Primary Key (AlertID, username),
+    last_timestamp timestamp,
+    Primary Key (id, username),
     Foreign Key (username) references Users
 );
  
-CREATE TABLE DatabaseAlert (
-    AlertID int,
-    username varchar(20),
-    priority int,
-    query varchar(500),
-    threshold_low float,
-    threshold_high float,
-    type varchar(20) check(type in ('ABOVE', 'BELOW', 'IN_RANGE', 'OUT_OF_RANGE')),
-    message varchar(500),
-    Primary Key (AlertID, username),
-    Foreign Key (username) references Users
+
+CREATE TABLE AlertLogs (
+      id varchar(64),
+      timest timestamp,
+      ack int CHECK(ack in (0, 1)),
+      primary key(id, timest)
 );
- 
+-- CREATE TABLE DatabaseAlert (
+--     AlertID int,
+--     username varchar(20),
+--     priority int,
+--     query varchar(500),
+--     threshold_low float,
+--     threshold_high float,
+--     type varchar(20) check(type in ('ABOVE', 'BELOW', 'IN_RANGE', 'OUT_OF_RANGE')),
+--     message varchar(500),
+--     Primary Key (AlertID, username),
+--     Foreign Key (username) references Users
+-- );
+
 CREATE TABLE Sessions (
     SessionID varchar(64),
     username varchar(20),

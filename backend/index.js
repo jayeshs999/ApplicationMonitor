@@ -10,9 +10,8 @@ const nodes_and_databases = require('./controllers/get_nodes_databases')
 const get_groups = require("./controllers/get_groups")
 const get_nodes = require("./controllers/get_nodes");
 const get_dashboard_data = require("./controllers/get_dashboard_data")
-const { request } = require("http");
 const { InfluxDB, Point } = require('@influxdata/influxdb-client')
-const { appendFile } = require('fs')
+const alertController = require('./controllers/alerts')
 
 const url = process.env.INFLUX_URL || ''
 const token = process.env.INFLUX_TOKEN
@@ -233,6 +232,18 @@ app.post('/api/add-database', (req, res) => {
 app.post('/api/get-dashboard-data', (req, res) => {
     get_dashboard_data(req, res, pool, influx)
     // queryApi.queryRows(anotherQuery, fluxObserver)
+});
+
+app.post('/api/alert/create', (req, res) => {
+    alertController.create(req, res, pool);
+})
+
+app.get('/api/alert/list', (req, res) => {
+    alertController.getList(req, res, pool);
+})
+
+app.get('/api/alert/logs',(req, res) => {
+    alertController.getLogs(req, res, pool);
 })
 
 var server = app.listen(8081, function () {

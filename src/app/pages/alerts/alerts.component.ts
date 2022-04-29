@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { API } from 'src/app/API';
 import { HttpServiceService } from 'src/app/http-service.service';
 import { DatabaseMetrics } from '../dashboard/dashboard-view/databaseMetrics';
@@ -11,16 +12,24 @@ import { NodeMetrics } from '../dashboard/dashboard-view/nodeMetrics';
 })
 export class AlertsComponent implements OnInit {
 
-  data = [
+  alertList = [
         {
-          title: 'Title 1'
+            id : 'ashjsj',
+            name: 'Title 1',
+            description : 'Description 1',
+            priority : 0,
+            unacknowledged : 3,
         },
-        {
-          title: 'Title 2'
-       },
       ]
   
   createModalOpen : boolean = false;
+  currAlert : any = {
+    id : undefined,
+    logs : undefined,
+    name : undefined,
+  };
+  viewHistoryModalOpen : boolean = false;
+
   PRIORITY = [
     {
       name : '  CRIT',
@@ -59,9 +68,14 @@ export class AlertsComponent implements OnInit {
   listDatabases : any[] = []; 
 
 
-  constructor(private httpService : HttpServiceService) { }
+  constructor(private httpService : HttpServiceService, private notification : NzNotificationService) { }
 
   ngOnInit(): void {
+    this.httpService.getOrRedirectToLogin(API.ServerURL + API.GetAlerts).subscribe({
+      next: (res: any) => {
+        this.alertList = res.alerts;
+      }
+    });
   }
 
   handleCancel(){
@@ -71,6 +85,39 @@ export class AlertsComponent implements OnInit {
   handleOk(){
     this.httpService.postAndNotify(API.ServerURL + API.CreateAlert, this.newAlert)
     this.createModalOpen = false;
+  }
+
+  openViewHistoryModal(alert){
+    this.currAlert = alert;
+    this.httpService.get(API.ServerURL + API.GetAlertLogs, {
+      params : {
+        alert_id : this.currAlert.id
+      }
+    })
+    .subscribe({
+      next: (res: any) => {
+        this.currAlert.logs = res.logs;
+        this.viewHistoryModalOpen = true;
+      },
+      error: (err: any) => {
+      }
+    });
+  }
+  
+  acknowledgeAlert(timest, index){
+    this.httpService.post(API.ServerURL + API.AcknowledgeAlert, {
+      alert_id : this.currAlert.id,
+      timest : timest
+    }).subscribe({ 
+      next: (res:any) => {
+        this.currAlert.logs[index].ack  = 1;
+        this.notification.success('Success',res.message);
+
+      },
+      error: (err) => {
+        this.notification.error('Error',err.error.err);
+      }
+    })
   }
 
 }

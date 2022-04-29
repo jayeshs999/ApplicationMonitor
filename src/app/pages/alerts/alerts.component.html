@@ -54,7 +54,7 @@
                         nzPlaceHolder="Please select the databases">
                         <nz-option-group *ngFor="let optionGroup of listDatabases" [nzLabel]="optionGroup.node">
                             <nz-option *ngFor="let option of optionGroup.databases"
-                                [nzValue]="{ 'node' : optionGroup.node, 'database' : option.database_id }"
+                                [nzValue]="option.database_id"
                                 [nzLabel]="option.name">
                             </nz-option>
                         </nz-option-group>
@@ -108,17 +108,48 @@
 
 <nz-list nzGrid>
     <div nz-row [nzGutter]="16">
-        <div nz-col [nzXXl]="6" [nzXl]="6" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let item of data">
+        <div nz-col [nzXXl]="6" [nzXl]="6" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let item of alertList">
             <nz-list-item (click)="1+1">
                 <div class="card border-0" style="width: 18rem;" style="background-color: rgb(41,41,51);height: 15vh;">
                     <div class="card-body">
-                        <h5 class="card-title" style="color: rgb(21, 104, 246);">{{item.title}}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted" style="font-size: small;">Description</h6>
-                        <p class="card-text text-muted" style="font-size: smaller;"> Created on</p>
-                        <a class="card-link"><i nz-icon nzType="eye" nzTheme="outline"></i></a>
+                        <h5 class="card-title" style="color: rgb(21, 104, 246);">{{item.name}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted" style="font-size: small;">{{item.description}}</h6>
+                        <p class="card-text text-muted" style="font-size: smaller;"> {{item.numUnacknowledged}} unacknowledged alerts</p>
+                        <a class="card-link" (click)="openViewHistoryModal(item)"><i nz-icon nzType="eye" nzTheme="outline"></i></a>
                     </div>
                 </div>
             </nz-list-item>
         </div>
     </div>
 </nz-list>
+
+<nz-modal [(nzVisible)]="viewHistoryModalOpen" nzTitle="{{currAlert.name}}" (nzOnCancel)="viewHistoryModalOpen = false" (nzOnOk)="viewHistoryModalOpen = false">
+    <ng-container *nzModalContent>
+        <nz-table
+      #virtualTable
+      [nzData]="currAlert.logs"
+      [nzFrontPagination]="false"
+      [nzShowPagination]="false"
+      [nzScroll]="{ x: '1200px', y: '240px' }"
+    >
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Acknowledge</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-template nz-virtual-scroll let-data let-index="index">
+          <tr>
+            <td>{{ data.timest }}</td>
+            <td>
+                <button nz-button *ngIf="data.ack == 0" nzType="primary" class="create-alert-button" (click)="acknowledgeAlert(data.timest, index)">
+                    Acknowledge
+                </button>
+            </td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </nz-table>
+    </ng-container>
+</nz-modal>

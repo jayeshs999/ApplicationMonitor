@@ -12,4 +12,7 @@ export const API = {
     AddDatabase : '/api/add-database/',
     GetDashboardData : '/api/get-dashboard-data/',
     CreateAlert : '/api/alert/create',
+    GetAlerts : '/api/alert/list',
+    GetAlertLogs : '/api/alert/logs',
+    AcknowledgeAlert : '/api/alert/acknowledge',
 }
