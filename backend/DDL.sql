@@ -3,10 +3,12 @@ DROP TABLE IF EXISTS Groups CASCADE;
 DROP TABLE IF EXISTS Users CASCADE;
 DROP TABLE IF EXISTS NodeGroup CASCADE;
 DROP TABLE IF EXISTS UserGroup CASCADE;
-DROP TABLE IF EXISTS NodeAlert CASCADE;
+/* DROP TABLE IF EXISTS NodeAlert CASCADE; */
 DROP TABLE IF EXISTS Databases CASCADE;
-DROP TABLE IF EXISTS DatabaseAlert CASCADE;
+/* DROP TABLE IF EXISTS DatabaseAlert CASCADE; */
 DROP TABLE IF EXISTS Sessions CASCADE;
+DROP TABLE IF EXISTS Alerts CASCADE;
+DROP TABLE IF EXISTS AlertLogs CASCADE;
 
 CREATE TABLE Node (
    IP varchar(40),
@@ -67,7 +69,7 @@ CREATE TABLE Alerts (
     priority int CHECK(priority < 4),
     message varchar(500),
     last_timestamp timestamp,
-    Primary Key (id, username),
+    Primary Key (id),
     Foreign Key (username) references Users
 );
  
