@@ -13,39 +13,39 @@ import { WindowPeriods } from './windowPeriods';
   styleUrls: ['./dashboard-view.component.scss']
 })
 export class DashboardViewComponent implements OnInit {
-  nodeCells : any = [];
-  databaseCells : any = [];
-  nodesToTrack : any[] = []
-  databasesToTrack : any[] = []
-  listNodes : any[] = []
-  listDatabases : any = [];
+  nodeCells: any = [];
+  databaseCells: any = [];
+  nodesToTrack: any[] = []
+  databasesToTrack: any[] = []
+  listNodes: any[] = []
+  listDatabases: any = [];
   nodeCellModalOpen = false;
   databaseCellModalOpen = false;
 
-  timePeriod : any;
+  timePeriod: any;
 
   nodeCellForm = {
-    'name' : '',
-    'metric' : '',
-    'aggregateFunction' : '',
-    'window' : {
-      'type' : '',
-      'value' : undefined,
+    'name': '',
+    'metric': '',
+    'aggregateFunction': '',
+    'window': {
+      'type': '',
+      'value': undefined,
     },
-    'data' : undefined,
-    'timestamps' : undefined
+    'data': undefined,
+    'timestamps': undefined
   }
-  
+
   databaseCellForm = {
-    'name' : '',
-    'metric' : '',
-    'aggregateFunction' : '',
-    'window' : {
-      'type' : '',
-      'value' : undefined,
+    'name': '',
+    'metric': '',
+    'aggregateFunction': '',
+    'window': {
+      'type': '',
+      'value': undefined,
     },
-    'data' : undefined,
-    'timestamps' : undefined
+    'data': undefined,
+    'timestamps': undefined
   }
 
   windowPeriods = WindowPeriods;
@@ -54,7 +54,7 @@ export class DashboardViewComponent implements OnInit {
   databaseMetrics = DatabaseMetrics;
   timePeriods = TimePeriods;
 
-  constructor(private httpService:HttpServiceService) { }
+  constructor(private httpService: HttpServiceService) { }
 
   ngOnInit(): void {
     this.httpService.getOrRedirectToLogin(API.ServerURL + API.GetNodesAndDatabases).subscribe({
@@ -62,17 +62,17 @@ export class DashboardViewComponent implements OnInit {
         this.listDatabases = [];
         let temp = {};
         res.data.forEach((ele) => {
-          if(temp.hasOwnProperty(ele.ip)){
-            temp[ele.ip].push({'database_id' : ele.database_id, 'name' : ele.name});
+          if (temp.hasOwnProperty(ele.ip)) {
+            temp[ele.ip].push({ 'database_id': ele.database_id, 'name': ele.name });
           }
-          else{
-            temp[ele.ip] = [{'database_id' : ele.database_id, 'name' : ele.name}];
+          else {
+            temp[ele.ip] = [{ 'database_id': ele.database_id, 'name': ele.name }];
           }
         });
 
         for (let key in temp) {
           if (temp.hasOwnProperty(key)) {
-              this.listDatabases.push( { 'node' : key, 'databases' : temp[key] } );
+            this.listDatabases.push({ 'node': key, 'databases': temp[key] });
           }
         }
       }
@@ -86,53 +86,74 @@ export class DashboardViewComponent implements OnInit {
   }
 
   handleCreateCell(type: string) {
-    if(type === 'node'){
+    if (type === 'node') {
       this.nodeCells.push(this.nodeCellForm);
       this.nodeCellModalOpen = false;
       this.nodeCellForm = {
-        'name' : '',
-        'metric' : '',
-        'aggregateFunction' : '',
-        'window' : {
-          'type' : '',
-          'value' : undefined,
+        'name': '',
+        'metric': '',
+        'aggregateFunction': '',
+        'window': {
+          'type': '',
+          'value': undefined,
         },
-        'data' : undefined,
-        'timestamps' : undefined
+        'data': undefined,
+        'timestamps': undefined
       }
-      
+
     }
-    else{
+    else {
       this.databaseCells.push(this.databaseCellForm);
       this.databaseCellModalOpen = false;
       this.databaseCellForm = {
-        'name' : '',
-        'metric' : '',
-        'aggregateFunction' : '',
-        'window' : {
-          'type' : '',
-          'value' : undefined,
+        'name': '',
+        'metric': '',
+        'aggregateFunction': '',
+        'window': {
+          'type': '',
+          'value': undefined,
         },
-        'data' : undefined,
-        'timestamps' : undefined
+        'data': undefined,
+        'timestamps': undefined
       }
     }
   }
 
-  refreshDashboard(){
-    let form : any = {
-      'time_period' : this.timePeriod,
-      'node_cell_data' : this.nodeCells.map((ele: any) => {ele['window'] = (ele['window']['type'] == 'custom' && ele['window']['value']) || ele['window']['type']; return ele}),
-      'database_cell_data' : this.databaseCells.map((ele: any) => {ele['window'] = (ele['window']['type'] == 'custom' && ele['window']['value']) || ele['window']['type']; return ele}), 
-    }
+  refreshDashboard() {
+    for (let i = 0; i < this.nodeCells.length; i++) {
+      let ele = this.nodeCells[i];
+      ele['window'] = ele['window']['type'] == 'custom' ? ele['window']['value'] : ele['window']['type']
 
-    this.httpService.post(API.ServerURL + API.GetDashboardData, form).subscribe({
-      next : (res: any) => {
-        for(let i = 0; i < this.nodeCells.length; i++){
-          this.nodeCells[i]['data'] = res[i]['data'];
-          this.nodeCells[i]['timestamps'] = res[i]['timestamps'];
-        }
+      let form: any = {
+        'time_period': this.timePeriod,
+        'type': 'node',
+        'entities': this.nodesToTrack,
+        'cell_data': ele
       }
-    })
+      this.httpService.post(API.ServerURL + API.GetDashboardData, form).subscribe({
+        next: (res: any) => {
+            this.nodeCells[i]['data'] = res['data'];
+            this.nodeCells[i]['timestamps'] = res['timestamps'];
+        }
+      })
+    }
+    
+    for (let i = 0; i < this.databaseCells.length; i++) {
+      let ele = this.databaseCells[i];
+      ele['window'] = ele['window']['type'] == 'custom' ? ele['window']['value'] : ele['window']['type']
+
+      let form: any = {
+        'time_period': this.timePeriod,
+        'type': 'database',
+        'entities': this.databasesToTrack,
+        'cell_data': ele
+      }
+      this.httpService.post(API.ServerURL + API.GetDashboardData, form).subscribe({
+        next: (res: any) => {
+            this.databaseCells[i]['data'] = res['data'];
+            this.databaseCells[i]['timestamps'] = res['timestamps'];
+        }
+      })
+    }
   }
 }

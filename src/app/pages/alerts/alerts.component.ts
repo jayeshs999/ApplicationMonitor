@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { API } from 'src/app/API';
+import { HttpServiceService } from 'src/app/http-service.service';
+import { DatabaseMetrics } from '../dashboard/dashboard-view/databaseMetrics';
+import { NodeMetrics } from '../dashboard/dashboard-view/nodeMetrics';
 
 @Component({
   selector: 'app-alerts',
@@ -6,31 +10,56 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./alerts.component.scss']
 })
 export class AlertsComponent implements OnInit {
-  
-  createModalOpen : boolean = false;
 
   data = [
+        {
+          title: 'Title 1'
+        },
+        {
+          title: 'Title 2'
+       },
+      ]
+  
+  createModalOpen : boolean = false;
+  PRIORITY = [
     {
-      title: 'Title 1'
+      name : '  CRIT',
+      value : 0
     },
     {
-      title: 'Title 2'
+      name : 'WARN',
+      value : 1
     },
     {
-      title: 'Title 3'
+      name : 'INFO',
+      value : 2
     },
     {
-      title: 'Title 4'
-    },
-    {
-      title: 'Title 5'
-    },
-    {
-      title: 'Title 6'
+      name : 'OK',
+      value : 3
     }
-  ];
+  ]
 
-  constructor() { }
+  newAlert : any = {
+    name : '',
+    description : '',
+    entity : '',
+    metric : '',
+    entity_ids : [],
+    threshold_1 : undefined,
+    threshold_2 : undefined,
+    threshold_type : '',
+    alert_priority : 0,
+    alert_message : '',
+  }
+
+  nodeMetrics = NodeMetrics;
+  databaseMetrics = DatabaseMetrics; 
+  listNodes : any[] = [];
+  listDatabases : any[] = []; 
+
+
+  constructor(private httpService : HttpServiceService) { }
 
   ngOnInit(): void {
   }
@@ -40,6 +69,7 @@ export class AlertsComponent implements OnInit {
   }
 
   handleOk(){
+    this.httpService.postAndNotify(API.ServerURL + API.CreateAlert, this.newAlert)
     this.createModalOpen = false;
   }
 

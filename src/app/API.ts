@@ -11,4 +11,5 @@ export const API = {
     AddUser : '/api/add-user/',
     AddDatabase : '/api/add-database/',
     GetDashboardData : '/api/get-dashboard-data/',
+    CreateAlert : '/api/alert/create',
 }

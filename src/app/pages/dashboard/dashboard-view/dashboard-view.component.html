@@ -118,7 +118,7 @@
                             nzPlaceHolder="Please select the databases to track">
                             <nz-option-group *ngFor="let optionGroup of listDatabases" [nzLabel]="optionGroup.node">
                                 <nz-option *ngFor="let option of optionGroup.databases"
-                                    [nzValue]="{ 'node' : optionGroup.node, 'database' : option.database_id }"
+                                    [nzValue]="option.database_id"
                                     [nzLabel]="option.name">
                                 </nz-option>
                             </nz-option-group>

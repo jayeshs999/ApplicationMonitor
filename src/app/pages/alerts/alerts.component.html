@@ -11,19 +11,95 @@
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzFor="name">Name</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                    <input nz-input name="name" type="name" id="name">
+                    <input nz-input name="name" type="name" id="name" [(ngModel)]="newAlert.name">
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6" nzFor="name"></nz-form-label>
+                <nz-form-label [nzSpan]="6" nzFor="desc">Description</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                    <input nz-input name="name" type="name" id="name">
+                    <input nz-input name="name" type="name" id="desc" [(ngModel)]="newAlert.description">
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSpan]="6" nzFor="name">Name</nz-form-label>
+                <nz-form-label [nzSpan]="6" nzFor="type">Entity</nz-form-label>
                 <nz-form-control [nzSpan]="14">
-                    <input nz-input name="name" type="name" id="name">
+                    <nz-select nzPlaceHolder="Select a type" name="type" [(ngModel)]="newAlert.entity">
+                        <nz-option *ngFor="let item of ['Node','Database']" [nzLabel]="item" [nzValue]="item">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="newAlert.entity">
+                <nz-form-label [nzSpan]="6" nzFor="type">Metric</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <nz-select nzPlaceHolder="Select a metric" name="type" [(ngModel)]="newAlert.metric">
+                        <nz-option *ngFor="let item of newAlert.entity == 'Node' ? nodeMetrics : databaseMetrics"
+                            [nzLabel]="item" [nzValue]="item"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="newAlert.entity == 'Node'">
+                <nz-form-label [nzSpan]="6" nzFor="type">Nodes</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <nz-select name="nodeChoose" [(ngModel)]="newAlert.entity_ids" nzSize="large" nzMode="multiple"
+                        nzPlaceHolder="Please select the nodes" name="Node">
+                        <nz-option *ngFor="let item of listNodes" [nzLabel]="item" [nzValue]="item"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="newAlert.entity == 'Database'">
+                <nz-form-label [nzSpan]="6" nzFor="type">Databases</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <nz-select name="databaseChoose" [(ngModel)]="newAlert.entity_ids" nzSize="large" nzMode="multiple"
+                        nzPlaceHolder="Please select the databases">
+                        <nz-option-group *ngFor="let optionGroup of listDatabases" [nzLabel]="optionGroup.node">
+                            <nz-option *ngFor="let option of optionGroup.databases"
+                                [nzValue]="{ 'node' : optionGroup.node, 'database' : option.database_id }"
+                                [nzLabel]="option.name">
+                            </nz-option>
+                        </nz-option-group>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzFor="type">Threshold Type</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <nz-select nzPlaceHolder="Select a threshold type" name="type"
+                        [(ngModel)]="newAlert.threshold_type">
+                        <nz-option *ngFor="let item of ['ABOVE','BELOW','IN_RANGE','OUT_OF_RANGE']" [nzLabel]="item"
+                            [nzValue]="item"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="['ABOVE','BELOW'].includes(newAlert.threshold_type)">
+                <nz-form-label [nzSpan]="6" nzFor="type">Threshold</nz-form-label>
+                    <nz-form-control [nzSpan]="14">
+                        <input nz-input name="name" type="number" id="type" [(ngModel)]="newAlert.threshold_1">
+                    </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="['IN_RANGE','OUT_OF_RANGE'].includes(newAlert.threshold_type)">
+                <nz-form-label [nzSpan]="6" nzFor="type">Between</nz-form-label>
+                    <nz-form-control [nzSpan]="7">
+                        <input nz-input name="name" type="number" id="type" [(ngModel)]="newAlert.threshold_1">
+                    </nz-form-control>
+                    <nz-form-control [nzSpan]="7">
+                        <input nz-input name="name" type="number" id="type" [(ngModel)]="newAlert.threshold_2">
+                    </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzFor="type">Priority</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <nz-select nzPlaceHolder="Select an alert type" name="type"
+                        [(ngModel)]="newAlert.alert_priority">
+                        <nz-option *ngFor="let item of PRIORITY" [nzLabel]="item.name"
+                            [nzValue]="item.value"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzFor="alert_message">Alert message</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <input nz-input name="name" type="name" id="alert_message" [(ngModel)]="newAlert.alert_message">
                 </nz-form-control>
             </nz-form-item>
         </form>
