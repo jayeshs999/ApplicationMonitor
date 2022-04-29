@@ -3,6 +3,7 @@ const { resolve } = require('dns');
 const { Pool } = require('pg');
 const tx = require('./utils/transaction');
 const metricsMap = require('./utils/metrics');
+const format = require('pg-format')
 require('dotenv').config();
 
 const url = process.env.INFLUX_URL || ''
@@ -74,11 +75,12 @@ async function updateAlert(alert) {
     queryApi.queryRows(query, {
       next(row, tableMeta) {
         const o = tableMeta.toObject(row)
-        console.log(alert.name,o)
+        // console.log(alert.name,o)
 
         // console.log(o)
         if (alert.threshold_type == "ABOVE") {
           if (o["_value"] > alert.threshold_low) {
+            // console.log(o["_value"])
             output.push([alert.id, o["_time"],0])
           }
         }
@@ -105,23 +107,35 @@ async function updateAlert(alert) {
       },
       complete() {
         console.log('\nFinished SUCCESS');
+        // console.log(output)
         resolve(output);
       }
     })
   }).catch(err => console.log(err))
   
+  console.log("awaitRes", awaitRes)
   if(awaitRes == undefined) {
     return 0
   }
   else{
-    let res = await tx(async client => {
-      
-      const { rows } = await client.query(format('INSERT INTO AlertLogs VALUES %L', data));
-      const { row2 } = await client.query('UPDATE Alerts SET last_timestamp = $1 WHERE id = $2', [end_timestamp, alert.id]);
-      return 1;
-    },pool).catch(err => console.log(err))
+    console.log("Ima heere")
+    pool.query(format('INSERT INTO AlertLogs VALUES %L', awaitRes), (err, result) => {
+      if (err) {
+          console.log(err);
+      }
+      else{
+          console.log("Updated alert logs")
+      }
+    })
 
-    return res;
+    pool.query(format('UPDATE Alerts SET last_timestamp = $1 WHERE id = $2', [end_timestamp, alert.id]), (err, result) => {
+      if (err) {
+          console.log(err);
+      }
+      else{
+          console.log("Updated alerts")
+      }
+    })
   }
 
 }
