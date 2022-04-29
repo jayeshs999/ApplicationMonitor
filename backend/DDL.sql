@@ -111,13 +111,16 @@ INSERT INTO Node VALUES ('1','Node1'),
 ('7','Node7'),
 ('8','Node8'),
 ('9','Node9'),
-('10','Node10');
+('10','Node10'),
+('10.9.70.59', 'Shrey'),
+('10.9.70.123', 'Jayesh');
 
 INSERT INTO Groups VALUES ('Group1','Group1 Description'),
 ('Group2','Group2 Description'),
 ('Group3','Group3 Description'),
 ('Group4','Group4 Description'),
-('Group5','Group5 Description');
+('Group5','Group5 Description'),
+('Group6','Group6 Description');
 
 INSERT INTO NodeGroup VALUES ('1','Group1'),
 ('2','Group1'),
@@ -138,7 +141,9 @@ INSERT INTO NodeGroup VALUES ('1','Group1'),
 ('7','Group4'),
 ('8','Group5'),
 ('9','Group5'),
-('10','Group5');
+('10','Group5'),
+('10.9.70.59','Group5'),
+('10.9.70.123','Group1');
 
 INSERT INTO Users VALUES ('admin','$2b$10$LJURPGR6PDHTVa9eGKhBKeUFjaZlSQTvrKyT38K24m.c6ydUwsr16'),
 ('User1','User1_password'),
@@ -183,4 +188,6 @@ INSERT INTO Databases VALUES ('1','1','Database1','Database1 Description'),
 ('23','9','Database23','Database23 Description'),
 ('24','9','Database24','Database24 Description'),
 ('25','10','Database25','Database25 Description'),
-('26','10','Database26','Database26 Description');
+('26','10','Database26','Database26 Description'),
+('27','10.9.70.59','lab2db','Db description'),
+('28','10.9.70.123','lab3db','Db 3 description');
