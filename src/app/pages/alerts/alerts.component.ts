@@ -76,6 +76,12 @@ export class AlertsComponent implements OnInit {
         this.alertList = res.alerts;
       }
     });
+
+    this.httpService.getOrRedirectToLogin(API.ServerURL + API.GetNodes).subscribe({
+      next: (res: any) => {
+        this.listNodes = res.data;
+      }
+    });
   }
 
   handleCancel(){
