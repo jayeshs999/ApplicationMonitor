@@ -119,8 +119,7 @@ export class DashboardViewComponent implements OnInit {
         'timestamps': undefined
       }
     }
-    console.log(this.nodeCells);
-    console.log(this.databaseCells)
+    this.refreshDashboard()
   }
 
   refreshDashboard() {

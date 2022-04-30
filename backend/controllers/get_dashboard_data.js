@@ -24,6 +24,10 @@ function get_dashboard_data(req, res, pool, influx) {
     //     "mem": '|> filter(fn: (r) => r["_measurement"] == "mem") |> filter(fn: (r) => r["_field"] == "used") ',
     //     "blks_hits": '|> filter(fn: (r) => r["_measurement"] == "postgresql") |> filter(fn: (r) => r["_field"] == "blks_hit") '
     // }
+    if(!req.body.time_period || !['node','database'].includes(req.body.type) || !req.body.entities || !req.body.entities.length || !req.body.cell_data.window || !req.body.cell_data.aggregateFunction || !req.body.cell_data.metric) {
+        res.json({error: "Missing parameters"})
+        return
+    }
 
     let bucket_string = `from(bucket: "${process.env.DATA_BUCKET_NAME}") `
 
@@ -62,34 +66,6 @@ function get_dashboard_data(req, res, pool, influx) {
 
     const query = bucket_string + timeperiod_string + map[req.body.cell_data.metric] + user_string + aggregate_string;
     console.log(query)
-
-    // console.log(query)
-
-    const query1 = `from(bucket: "${process.env.DATA_BUCKET_NAME}") \
-    |> range(start: -10h, stop: -0h) \
-    |> filter(fn: (r) => r["_measurement"] == "cpu") \
-    |> filter(fn: (r) => r["_field"] == "usage_system") \
-    |> filter(fn: (r) => r["cpu"] == "cpu-total") \
-    |> filter(fn: (r) => r["host"] == "Shreys-MacBook-Pro.local") \
-    |> aggregateWindow(every: 1h, fn: mean, createEmpty: false) \
-    |> yield(name: "mean")`
-
-    const query2 = `from(bucket: "${process.env.DATA_BUCKET_NAME}") \
-    |> range(start: -10h, stop: -0h) \
-    |> filter(fn: (r) => r["_measurement"] == "mem") \
-    |> filter(fn: (r) => r["_field"] == "used") \
-    |> filter(fn: (r) => r["host"] == "Shreys-MacBook-Pro.local") \
-    |> aggregateWindow(every: 1h, fn: mean, createEmpty: false) \
-    |> yield(name: "mean")`
-
-    const query3 = `from(bucket: "${process.env.DATA_BUCKET_NAME}") \
-    |> range(start: -10h, stop: -0h) \
-    |> filter(fn: (r) => r["_measurement"] == "postgresql") \
-    |> filter(fn: (r) => r["_field"] == "blks_read") \
-    |> filter(fn: (r) => r["db"] == "lab4db" or r["db"] == "lab2db") \
-    |> filter(fn: (r) => r["host"] == "Shreys-MacBook-Pro.local") \
-    |> aggregateWindow(every: 1h, fn: last, createEmpty: false) \
-    |> yield(name: "last")`
     
     new Promise((resolve, reject)=>{
         let output = {}
