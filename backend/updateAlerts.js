@@ -124,10 +124,13 @@ async function updateAlert(alert) {
     // console.log("Updated alert logs")
     // res = await pool.query(format('UPDATE Alerts SET last_timestamp = $1 WHERE id = $2', [end_timestamp, alert.id]))
     // console.log("Updated alerts")
-    let query1 = format('INSERT INTO AlertLogs VALUES %L;', awaitRes);
+    query1 = ''
+    for( let val of awaitRes){
+      query1 += format('INSERT INTO AlertLogs VALUES %L;', [val]);
+    }
     let query2 = format('UPDATE Alerts SET last_timestamp = %L WHERE id = %L',moment(end_timestamp).format('YYYY-MM-DD HH:mm:ss.SS'), alert.id)
-    //console.log(`BEGIN;${query1};${query2};COMMIT;`)
-    let result = await pool.query(`BEGIN;${query1};${query2};COMMIT;`);
+
+    let result = await pool.query(`BEGIN;${query1}${query2};COMMIT;`);
 
     // pool.query(format('INSERT INTO AlertLogs VALUES %L', awaitRes), (err, result) => {
     //   if (err) {
