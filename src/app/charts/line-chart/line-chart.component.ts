@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { ChartComponent } from 'ng-apexcharts';
 import { ChartOptions } from 'src/app/chartoptions.type';
+import { convertToNumbers } from '../ISOtonumber';
 import { LineChartConfig } from './line-chart.config';
 
 @Component({
@@ -20,7 +21,7 @@ export class LineChartComponent implements OnInit{
       this._chartSeries = value;
       console.log(value)
       if(value.length != 0)
-        this.chart.updateSeries(this._chartSeries, true);
+        this.chart.updateSeries(convertToNumbers(this._chartSeries), true);
     }
     
     get chartSeries(): any {

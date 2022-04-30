@@ -13,8 +13,7 @@ import { WindowPeriods } from './windowPeriods';
   styleUrls: ['./dashboard-view.component.scss']
 })
 export class DashboardViewComponent implements OnInit {
-  nodeCells: any[] = [
-  ];
+  nodeCells: any[] = [];
   databaseCells: any = [];
   nodesToTrack: any[] = []
   databasesToTrack: any[] = []
@@ -22,6 +21,8 @@ export class DashboardViewComponent implements OnInit {
   listDatabases: any = [];
   nodeCellModalOpen = false;
   databaseCellModalOpen = false;
+  autoRefreshChecked = false;
+  autoRefreshIntervalObject  : any = undefined;
 
   timePeriod: any;
 
@@ -161,6 +162,23 @@ export class DashboardViewComponent implements OnInit {
             // this.databaseCells[i]['timestamps'] = res['timestamps'];
         }
       })
+    }
+  }
+
+  toggleAutoRefresh(){
+    this.autoRefreshChecked = !this.autoRefreshChecked;
+    if(this.autoRefreshChecked){
+      this.autoRefreshIntervalObject = setInterval(this.refreshDashboard,10000);
+    }
+    else{
+      clearInterval(this.autoRefreshIntervalObject);
+      this.autoRefreshIntervalObject = undefined;
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.autoRefreshIntervalObject) {
+      clearInterval(this.autoRefreshIntervalObject);
     }
   }
 }

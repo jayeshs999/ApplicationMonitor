@@ -1,5 +1,5 @@
 <div nz-row nzJustify="space-around">
-    <div nz-col nzSpan="16">
+    <div nz-col nzSpan="14">
         <nz-form-item>
             <nz-select name="timePeriod" [(ngModel)]="timePeriod" nzSize="large"
                 nzPlaceHolder="Please select the time period" name="Node">
@@ -7,14 +7,21 @@
             </nz-select>
         </nz-form-item>
     </div>
-    <div nz-col nzSpan="3"></div>
-    <div nz-col nzSpan="5">
+    <div nz-col nzSpan="2"></div>
+    <div nz-col nzSpan="3">
         <nz-form-item>
             <button nz-button nzType="primary" nzSize="large" class="create-dashboard-button"
                 (click)="refreshDashboard()">
                 <i nz-icon nzType="redo"></i>
+                Refresh
             </button>
         </nz-form-item>
+    </div>
+    <div nz-col nzSpan="5">
+        <button nz-button nzType="primary" nzSize="large" class="create-dashboard-button"
+                (click)="refreshDashboard()" [style.background-color]="autoRefreshChecked ? 'green' : 'red'" style="border: 0ch;" (click)="toggleAutoRefresh()">
+                AutoRefresh
+        </button>
     </div>
 </div>
 <nz-tabset>

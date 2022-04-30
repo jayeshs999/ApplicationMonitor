@@ -1,7 +1,7 @@
 <nz-page-header [nzGhost]="false">
     <nz-page-header-extra>
         <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
-            <nz-avatar [nzText]="user[0].toUpperCase()" [nzSize]="35" style="color:#f56a00; background-color:#fde3cf;font-size: large;"></nz-avatar>
+            <nz-avatar [nzText]="user ? user[0].toUpperCase() : 'A'" [nzSize]="35" style="color:#f56a00; background-color:#fde3cf;font-size: large;"></nz-avatar>
           </a>
         <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu>
