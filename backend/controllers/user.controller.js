@@ -27,7 +27,7 @@ function createUser(req, res, pool) {
                         res.status(500).json({err: "Some error occurred"});
                     }
                     else{
-                        res.status(200).json({message: "Node added successfully"});
+                        res.status(200).json({message: "User added successfully"});
                     }
                 })
             }

@@ -38,11 +38,12 @@ function createDatabase(req, res, pool){
     if (req.session.user != "admin") {
         res.status(405).json({err: "Does not have admin access"})
     }
-    else if(!req.body.ip || !req.body.name){
+    else if(!req.body.node || !req.body.name){
+        console.log(req.body)
         res.status(400).json({err: "Missing required fields"})
     }
     else{
-        pool.query("INSERT INTO Databases VALUES ($1, $2, $3, $4)", [uuid.v4(), req.body.ip, req.body.name, req.body.description], (err, result) => {
+        pool.query("INSERT INTO Databases VALUES ($1, $2, $3, $4)", [uuid.v4(), req.body.node, req.body.name, req.body.description], (err, result) => {
             if (err) {
                 console.log(err)
                 res.status(500).json({err: "Some error occurred"});

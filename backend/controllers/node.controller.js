@@ -20,7 +20,7 @@ function createNode(req, res, pool) {
     if (req.session.user != "admin") {
         res.status(405).json({ err: "Does not have admin access" })
     }
-    else if(!req.body.ip || !req.body.name){
+    else if(!req.body.ip || !req.body.name || !req.body.groups || !req.body.groups.length){
         res.status(400).json({ err: "Missing required fields" })
     }
     else {
