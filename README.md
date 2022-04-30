@@ -1,4 +1,4 @@
-<h1 align="center">Angular - The modern web developer's platform.</h1>
+<h1 align="center">ApplicationMonitor - The modern time series application monitoring platform.</h1>
 
 <p align="center">
   <img src="Images/monitor.svg" alt="ApplicationMonitorLogo" width="120px" height="120px"/>
