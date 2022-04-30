@@ -20,6 +20,9 @@ function createNode(req, res, pool) {
     if (req.session.user != "admin") {
         res.status(405).json({ err: "Does not have admin access" })
     }
+    else if(!req.body.ip || !req.body.name){
+        res.status(400).json({ err: "Missing required fields" })
+    }
     else {
         pool.query("INSERT INTO node VALUES ($1, $2)", [req.body.ip, req.body.name], (err, result) => {
             if (err) {

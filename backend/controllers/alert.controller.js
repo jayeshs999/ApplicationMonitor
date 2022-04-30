@@ -4,6 +4,12 @@ const moment = require('moment')
 function createAlert(req,res,pool){
     let entity = req.body.entity;
 
+    if(!req.body.name || !req.body.description || !req.body.alert_priority || !req.body.metric || !req.body.threshold_type){
+        res.status(400).json({err: "Missing required fields"})
+    }
+    else if((['ABOVE','BELOW'].includes(req.body.threshold_type) && !req.body.threshold_1)|| (['IN_RANGE','OUT_OF_RANGE'].includes(req.body.threshold_type) && (!req.body.threshold_1 || !req.body.threshold_2))){
+        res.status(400).json({err: "Missing required fields"})
+    }
     if (entity != "node" && entity != "database"){
         res.status(400).json({err: "Entity must be node or database"});
         return;

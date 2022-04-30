@@ -14,6 +14,9 @@ function createGroup(req, res, pool){
         // console.log("Haha")
         res.status(405).json({err: "Does not have admin access"})
     }
+    else if(!req.body.name){
+        res.status(400).json({err: "Group name is required"});
+    }
     else {
         pool.query('insert into groups values ($1, $2)', [req.body.name, req.body.description], (err, result) => {
             if (err) {

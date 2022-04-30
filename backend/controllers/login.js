@@ -2,7 +2,9 @@ const bcrypt = require('bcrypt');
 
 function login(req, res,pool){
     let username = req.body.username;
-
+    if(!username || !req.body.password){
+        res.status(400).json({err: "Username and password are required"})
+    }
     pool.query('SELECT password FROM Users WHERE username=($1)', [username], (err, result) => {
         if (err) {
             console.log(err);
