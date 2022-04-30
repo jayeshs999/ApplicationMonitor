@@ -1,4 +1,4 @@
-<h1 align="center">Angular - The modern web developer's platform.</h1>
+<h1 align="center">ApplicationMonitor - The modern time series application monitoring platform.</h1>
 
 <p align="center">
   <img src="Images/monitor.svg" alt="ApplicationMonitorLogo" width="120px" height="120px"/>
@@ -18,24 +18,6 @@ We have used a time-series database InfluxDB combined with Telegraf to monitor t
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.0.
 
-
-## Execution Instructions
-
- - Download the repository
- - Install NodeJS and AngularCLI
- - Open the terminal and cd into the app repository
- - Run the following commands
-```python
-npm install
-npm i ng-zorro-antd
-cd backend
-npm install
-npm install express
-```
-
-## Run server
-
-Run `ng serve` for a server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Features
 
@@ -88,10 +70,14 @@ There is a choice provided to the user to select the machines/nodes which the us
 </p>
 <p align="right"> *see Images folder for more</p>
 
-## ER Diagram
-<p align="center">
-<img src="Images/ER.jpeg" alt="ER diagram" width="700"/>
-</p>
+
+
+## Authors
+* **Amit Kumar Mallik 19D070007** - [fun-math](https://github.com/fun-math)
+* **Bhavnoor Singh Marok 190050027** - [bhavnoormarok](https://github.com/bhavnoormarok)
+* **Jayesh Singla 190050053** - [jayeshs999](https://github.com/jayeshs999)
+* **Shrey Singla 190050114** - [shreysingla11](https://github.com/shreysingla11)
+
 
 ## References 
 
