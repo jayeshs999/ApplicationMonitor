@@ -5,8 +5,11 @@ function createUser(req, res, pool) {
     if (req.session.user != 'admin') {
         res.status(405).json({err: "Does not have admin access"})
     }
+    else if(!req.body.username || !req.body.password1 || !req.body.username || req.body.password1 != req.body.password2){
+        res.status(406).json({err: "Some error occured"})
+    }
     else {
-        let hash_password = bcrpyt.hashSync(req.body.password,10);
+        let hash_password = bcrpyt.hashSync(req.body.password1,10);
         pool.query('INSERT INTO users VALUES ($1, $2)', [req.body.username, hash_password], (err, result) => {
             if (err) {
                 console.log(err)
